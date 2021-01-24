@@ -7,5 +7,6 @@ public class Main {
         AuctionHouse auctionHouse = AuctionHouse.getInstance();
         auctionHouse.registerClients("data");
         auctionHouse.listClients();
+        auctionHouse.listProducts();
     }
 }
