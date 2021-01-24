@@ -38,7 +38,7 @@ public class LegalPersonBuilder implements ClientBuilder<LegalPerson, LegalPerso
         return legalPerson;
     }
 
-    public LegalPersonBuilder withSocialCapital(int socialCapital) {
+    public LegalPersonBuilder withSocialCapital(double socialCapital) {
         legalPerson.setSocialCapital(socialCapital);
         return this;
     }

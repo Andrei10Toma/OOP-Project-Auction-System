@@ -7,18 +7,6 @@ public class Client {
     private int numberParticipation;
     private int numberAuctionWins;
 
-    public Client(int id, String name, String address) {
-        this.id = id;
-        this.name = name;
-        this.address = address;
-        this.numberParticipation = 0;
-        this.numberAuctionWins = 0;
-    }
-
-    public Client(){
-
-    }
-
     public int getId() {
         return id;
     }

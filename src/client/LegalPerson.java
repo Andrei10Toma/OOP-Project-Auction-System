@@ -23,4 +23,15 @@ public class LegalPerson extends Client {
     public void setCompanyType(Company companyType) {
         this.companyType = companyType;
     }
+
+    @Override
+    public String toString() {
+        return "LegalPerson {name=" + super.getName() +
+                ", id=" + super.getId() +
+                ", address=" + super.getAddress() +
+                ", numberParticipation=" + super.getNumberParticipation() +
+                ", numberAuctionWins=" + super.getNumberAuctionWins() +
+                ", socialCapital=" + getSocialCapital() +
+                ", companyType=" + getCompanyType();
+    }
 }

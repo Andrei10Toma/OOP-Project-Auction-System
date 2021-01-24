@@ -17,8 +17,11 @@ public class Individual extends Client {
 
     @Override
     public String toString() {
-        return "Individual{" +
-                "birthDate='" + birthDate + '\'' +
-                '}';
+        return "Individual {name=" + super.getName() +
+                ", id=" + super.getId() +
+                ", address=" + super.getAddress() +
+                ", numberParticipation=" + super.getNumberParticipation() +
+                ", numberAuctionWins=" + super.getNumberAuctionWins() +
+                ", birthDate=" + birthDate;
     }
 }

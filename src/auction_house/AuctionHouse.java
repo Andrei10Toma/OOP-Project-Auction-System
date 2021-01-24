@@ -1,8 +1,7 @@
 package auction_house;
 
 import auction.Auction;
-import client.Client;
-import client.IndividualBuilder;
+import client.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -49,14 +48,27 @@ public class AuctionHouse {
             JsonArray clientArray = data.getAsJsonArray("Clients");
             clientArray.forEach(client -> {
                 JsonObject clientData = client.getAsJsonObject();
-                addClient(new IndividualBuilder()
-                        .withAddress(clientData.get("address").getAsString())
-                        .withId(clientData.get("id").getAsInt())
-                        .withName(clientData.get("name").getAsString())
-                        .withBirthDate(clientData.get("birthdate").getAsString())
-                        .withNumberAuctionWins(0)
-                        .withNumberParticipation(0)
-                        .build());
+                if (ClientType.INDIVIDUAL == (ClientType.valueOf(clientData.get("type").getAsString()))) {
+                    addClient(new IndividualBuilder()
+                            .withAddress(clientData.get("address").getAsString())
+                            .withId(clientData.get("id").getAsInt())
+                            .withName(clientData.get("name").getAsString())
+                            .withBirthDate(clientData.get("birthdate").getAsString())
+                            .withNumberAuctionWins(0)
+                            .withNumberParticipation(0)
+                            .build());
+                }
+                else {
+                    addClient(new LegalPersonBuilder()
+                            .withAddress(clientData.get("address").getAsString())
+                            .withId(clientData.get("id").getAsInt())
+                            .withName(clientData.get("name").getAsString())
+                            .withCompanyType(Company.valueOf(clientData.get("company").getAsString()))
+                            .withSocialCapital(clientData.get("socialCapital").getAsDouble())
+                            .withNumberAuctionWins(0)
+                            .withNumberParticipation(0)
+                            .build());
+                }
             });
         } catch (FileNotFoundException e) {
             e.printStackTrace();
