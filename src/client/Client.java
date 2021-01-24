@@ -58,4 +58,15 @@ public class Client {
     public void setNumberAuctionWins(int numberAuctionWins) {
         this.numberAuctionWins = numberAuctionWins;
     }
+
+    @Override
+    public String toString() {
+        return "Client{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", numberParticipation=" + numberParticipation +
+                ", numberAuctionWins=" + numberAuctionWins +
+                '}';
+    }
 }

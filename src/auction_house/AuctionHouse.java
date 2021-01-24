@@ -49,9 +49,21 @@ public class AuctionHouse {
             JsonArray clientArray = data.getAsJsonArray("Clients");
             clientArray.forEach(client -> {
                 JsonObject clientData = client.getAsJsonObject();
+                addClient(new IndividualBuilder()
+                        .withAddress(clientData.get("address").getAsString())
+                        .withId(clientData.get("id").getAsInt())
+                        .withName(clientData.get("name").getAsString())
+                        .withBirthDate(clientData.get("birthdate").getAsString())
+                        .withNumberAuctionWins(0)
+                        .withNumberParticipation(0)
+                        .build());
             });
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    public void listClients() {
+        System.out.println(clients);
     }
 }

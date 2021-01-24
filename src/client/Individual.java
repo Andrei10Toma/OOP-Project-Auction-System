@@ -2,14 +2,9 @@ package client;
 
 public class Individual extends Client {
     private String birthDate;
-//
-//    public Individual(int id, String name, String address, String birthDate) {
-//        super(id, name, address);
-//        this.birthDate = birthDate;
-//    }
 
     public Individual() {
-
+        this.birthDate = "\0";
     }
 
     public String getBirthDate() {
@@ -18,5 +13,12 @@ public class Individual extends Client {
 
     public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Individual{" +
+                "birthDate='" + birthDate + '\'' +
+                '}';
     }
 }
