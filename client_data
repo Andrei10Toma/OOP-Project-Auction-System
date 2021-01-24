@@ -1,0 +1,40 @@
+{
+  "Clients": [
+    {
+      "id": 1,
+      "name": "Andrei Toma",
+      "address": "andrei.toma1009@stud.acs.upb.ro",
+      "birthday": "2000.01.01"
+    },
+    {
+      "id": 2,
+      "name": "Stan Lucian Mihai",
+      "address": "stanlucimihai@gmail.com",
+      "birthday": "2000.01.01"
+    },
+    {
+      "id": 3,
+      "name": "Dragomir Constantin",
+      "address": "cos33@yahoo.com",
+      "birthday": "2000.01.01"
+    },
+    {
+      "id": 4,
+      "name": "Ilie Alexandru",
+      "address": "alex_fcp@gmail.com",
+      "birthday": "2000.01.01"
+    },
+    {
+      "id": 5,
+      "name": "Codrin Toma Alexandru",
+      "address": "tomcodrin@gmai;.com",
+      "birthday": "2000.01.01"
+    },
+    {
+      "id": 6,
+      "name": "Aldea Raluca Ioana",
+      "address": "raluca_ioana_33@yahoo.com",
+      "birthday": "2000.01.01"
+    }
+  ]
+}
