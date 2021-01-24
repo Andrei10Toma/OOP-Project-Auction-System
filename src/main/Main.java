@@ -1,12 +1,14 @@
 package main;
 
+import auction_house.Adapter;
 import auction_house.AuctionHouse;
+import auction_house.IAdapter;
 
 public class Main {
     public static void main(String[] args) {
-        AuctionHouse auctionHouse = AuctionHouse.getInstance();
-        auctionHouse.registerClients("data");
+        IAdapter adapter = new Adapter("data");
+        AuctionHouse auctionHouse = AuctionHouse.getInstance(adapter);
+        auctionHouse.registerClients();
         auctionHouse.listClients();
-        auctionHouse.listProducts();
     }
 }

@@ -32,6 +32,6 @@ public class LegalPerson extends Client {
                 ", numberParticipation=" + super.getNumberParticipation() +
                 ", numberAuctionWins=" + super.getNumberAuctionWins() +
                 ", socialCapital=" + getSocialCapital() +
-                ", companyType=" + getCompanyType();
+                ", companyType=" + getCompanyType() + "}";
     }
 }

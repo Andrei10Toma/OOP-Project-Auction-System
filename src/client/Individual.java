@@ -22,6 +22,6 @@ public class Individual extends Client {
                 ", address=" + super.getAddress() +
                 ", numberParticipation=" + super.getNumberParticipation() +
                 ", numberAuctionWins=" + super.getNumberAuctionWins() +
-                ", birthDate=" + birthDate;
+                ", birthDate=" + birthDate + "}";
     }
 }
