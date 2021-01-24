@@ -48,7 +48,7 @@ public class AuctionHouse {
             JsonArray clientArray = data.getAsJsonArray("Clients");
             clientArray.forEach(client -> {
                 JsonObject clientData = client.getAsJsonObject();
-                if (ClientType.INDIVIDUAL == (ClientType.valueOf(clientData.get("type").getAsString()))) {
+                if (ClientType.INDIVIDUAL == ClientType.valueOf(clientData.get("type").getAsString())) {
                     addClient(new IndividualBuilder()
                             .withAddress(clientData.get("address").getAsString())
                             .withId(clientData.get("id").getAsInt())

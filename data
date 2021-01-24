@@ -1,0 +1,106 @@
+{
+  "Clients": [
+    {
+      "type": "INDIVIDUAL",
+      "id": 1,
+      "name": "Andrei Toma",
+      "address": "andrei.toma1009@stud.acs.upb.ro",
+      "birthdate": "2000.01.01"
+    },
+    {
+      "type": "INDIVIDUAL",
+      "id": 2,
+      "name": "Stan Lucian Mihai",
+      "address": "stanlucimihai@gmail.com",
+      "birthdate": "2000.01.01"
+    },
+    {
+      "type": "LEGAL",
+      "id": 3,
+      "name": "Dragomir Constantin",
+      "address": "cos33@yahoo.com",
+      "company": "SRL",
+      "socialCapital": 1000
+    },
+    {
+      "type": "INDIVIDUAL",
+      "id": 4,
+      "name": "Ilie Alexandru",
+      "address": "alex_fcp@gmail.com",
+      "birthdate": "2000.01.01"
+    },
+    {
+      "type": "LEGAL",
+      "id": 5,
+      "name": "Codrin Toma Alexandru",
+      "address": "tomcodrin@gmai;.com",
+      "company": "SA",
+      "socialCapital": 2000
+    },
+    {
+      "type": "INDIVIDUAL",
+      "id": 6,
+      "name": "Aldea Raluca Ioana",
+      "address": "raluca_ioana_33@yahoo.com",
+      "birthdate": "2000.01.01"
+    }
+  ],
+  "Products": [
+    {
+      "productType": "FURNITURE",
+      "id": 1,
+      "name": "Wardrobe IKEA",
+      "minPrice": 100,
+      "type": "Storage",
+      "material": "wood"
+    },
+    {
+      "productType": "FURNITURE",
+      "id": 2,
+      "name": "Couch LEM'S",
+      "minPrice": 300,
+      "type": "Seating",
+      "material": "Leather"
+    },
+    {
+      "productType": "JEWEL",
+      "id": 3,
+      "name": "Necklace Pandora",
+      "minPrice": 600,
+      "material": "Gold",
+      "gem": "true"
+    },
+    {
+      "productType": "PAINTING",
+      "id": 4,
+      "name": "Mona Lisa",
+      "minPrice": 2000,
+      "painterName": "Leonardo DaVinci",
+      "colors": "TEMPERA"
+    },
+    {
+      "productType": "JEWEL",
+      "id": 5,
+      "name": "Bracelet Diesel",
+      "minPrice": 120,
+      "material": "Leather",
+      "gem": "false"
+    },
+    {
+      "productType": "FURNITURE",
+      "id": 6,
+      "name": "Billiard Table Jack",
+      "minPrice": 850,
+      "type": "Entertainment",
+      "material": "Leather and wood"
+    },
+    {
+      "productType": "PAINTING",
+      "id": 7,
+      "name": "Carul cu boi",
+      "minPrice": 420,
+      "painterName": "Nicolae Grigorescu",
+      "colors": "ACRYLIC"
+    }
+  ]
+}

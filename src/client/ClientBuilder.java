@@ -1,6 +1,6 @@
 package client;
 
-public interface ClientBuilder<E, T extends ClientBuilder<E, T>> {
+public interface ClientBuilder<E extends Client, T extends ClientBuilder<E, T>> {
     T withId(int id);
     T withName(String name);
     T withAddress(String address);
