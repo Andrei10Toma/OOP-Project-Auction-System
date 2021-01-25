@@ -108,6 +108,78 @@
       "year": 1920,
       "painterName": "Nicolae Grigorescu",
       "colors": "ACRYLIC"
+    },
+    {
+      "productType": "PAINTING",
+      "id": 8,
+      "name": "Self Portrait",
+      "minPrice": 3000,
+      "year": 1850,
+      "painterName": "Van Gogh",
+      "colors": "OIL"
+    },
+    {
+      "productType": "FURNITURE",
+      "id": 9,
+      "name": "Glass Table Carmen",
+      "minPrice": 600,
+      "year": 2017,
+      "type": "Table",
+      "material": "Glass and steel"
+    },
+    {
+      "productType": "FURNITURE",
+      "id": 10,
+      "name": "Couch Good Night",
+      "minPrice": 500,
+      "year": 2016,
+      "type": "Sitting",
+      "material": "Textile"
+    },
+    {
+      "productType": "FURNITURE",
+      "id": 11,
+      "name": "Bed Good Night",
+      "minPrice": 900,
+      "year": 2019,
+      "type": "Sleeping",
+      "material": "Wood"
+    },
+    {
+      "productType": "JEWEL",
+      "id": 12,
+      "name": "Ring Pandora",
+      "minPrice": 300,
+      "year": 2017,
+      "material": "Silver",
+      "gem": "true"
+    },
+    {
+      "productType": "JEWEL",
+      "id": 13,
+      "name": "Boys Police Necklace",
+      "minPrice": 200,
+      "year": 2020,
+      "material": "Stainless Steel",
+      "gem": "false"
+    },
+    {
+      "productType": "JEWEL",
+      "id": 14,
+      "name": "Diesel Ring Boys",
+      "minPrice": 150,
+      "year": 2019,
+      "material": "Stainless Steel",
+      "gem": "false"
+    },
+    {
+      "productType": "PAINTING",
+      "id": 15,
+      "name": "Guernica",
+      "minPrice": 5000,
+      "year": 1940,
+      "painterName": "Pablo Picasso",
+      "colors": "TEMPERA"
     }
   ]
 }
