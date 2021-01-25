@@ -24,6 +24,8 @@ public class Main {
                 switch (task) {
                     case LIST_CLIENTS -> auctionHouse.listClients();
                     case LIST_PRODUCTS -> auctionHouse.listProducts();
+                    case LOAD_CLIENTS -> auctionHouse.registerClients();
+                    case LOAD_PRODUCTS -> auctionHouse.registerProducts();
                     default -> throw new CommandNotFound("Command " + task + " not found.");
                 }
             }
