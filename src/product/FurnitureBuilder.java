@@ -22,6 +22,12 @@ public class FurnitureBuilder implements ProductBuilder<Furniture, FurnitureBuil
     }
 
     @Override
+    public FurnitureBuilder withYear(int year) {
+        furniture.setYear(year);
+        return this;
+    }
+
+    @Override
     public Furniture build() {
         return furniture;
     }

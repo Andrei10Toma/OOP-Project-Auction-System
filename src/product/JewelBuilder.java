@@ -22,6 +22,12 @@ public class JewelBuilder implements ProductBuilder<Jewel, JewelBuilder> {
     }
 
     @Override
+    public JewelBuilder withYear(int year) {
+        jewel.setYear(year);
+        return this;
+    }
+
+    @Override
     public Jewel build() {
         return jewel;
     }

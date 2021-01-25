@@ -5,6 +5,15 @@ public class Product {
     private String name;
     private double sellPrice;
     private double minPrice;
+    private int year;
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
 
     public int getId() {
         return id;

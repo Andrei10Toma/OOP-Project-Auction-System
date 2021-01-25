@@ -51,6 +51,7 @@
       "id": 1,
       "name": "Wardrobe IKEA",
       "minPrice": 100,
+      "year": 1990,
       "type": "Storage",
       "material": "wood"
     },
@@ -59,6 +60,7 @@
       "id": 2,
       "name": "Couch LEM'S",
       "minPrice": 300,
+      "year": 1980,
       "type": "Seating",
       "material": "Leather"
     },
@@ -67,6 +69,7 @@
       "id": 3,
       "name": "Necklace Pandora",
       "minPrice": 600,
+      "year": 2005,
       "material": "Gold",
       "gem": "true"
     },
@@ -75,6 +78,7 @@
       "id": 4,
       "name": "Mona Lisa",
       "minPrice": 2000,
+      "year": 1870,
       "painterName": "Leonardo DaVinci",
       "colors": "TEMPERA"
     },
@@ -83,6 +87,7 @@
       "id": 5,
       "name": "Bracelet Diesel",
       "minPrice": 120,
+      "year": 1930,
       "material": "Leather",
       "gem": "false"
     },
@@ -91,6 +96,7 @@
       "id": 6,
       "name": "Billiard Table Jack",
       "minPrice": 850,
+      "year": 1900,
       "type": "Entertainment",
       "material": "Leather and wood"
     },
@@ -99,6 +105,7 @@
       "id": 7,
       "name": "Carul cu boi",
       "minPrice": 420,
+      "year": 1920,
       "painterName": "Nicolae Grigorescu",
       "colors": "ACRYLIC"
     }

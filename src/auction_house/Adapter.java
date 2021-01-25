@@ -96,6 +96,7 @@ public class Adapter implements IAdapter {
                 .withName(productData.get("name").getAsString())
                 .withMinPrice(productData.get(MIN_PRICE).getAsDouble())
                 .withType(productData.get("type").getAsString())
+                .withYear(productData.get("year").getAsInt())
                 .withMaterial(productData.get("material").getAsString())
                 .build();
     }
@@ -105,6 +106,7 @@ public class Adapter implements IAdapter {
                 .withId(productData.get("id").getAsInt())
                 .withName(productData.get("name").getAsString())
                 .withMinPrice(productData.get(MIN_PRICE).getAsDouble())
+                .withYear(productData.get("year").getAsInt())
                 .withMaterial(productData.get("material").getAsString())
                 .withGem(productData.get("gem").getAsBoolean())
                 .build();
@@ -115,6 +117,7 @@ public class Adapter implements IAdapter {
                 .withId(productData.get("id").getAsInt())
                 .withName(productData.get("name").getAsString())
                 .withMinPrice(productData.get(MIN_PRICE).getAsDouble())
+                .withYear(productData.get("year").getAsInt())
                 .withColors(Colors.valueOf(productData.get("colors").getAsString()))
                 .withPainterName(productData.get("painterName").getAsString())
                 .build();

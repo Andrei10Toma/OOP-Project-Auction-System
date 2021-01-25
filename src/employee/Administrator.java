@@ -3,7 +3,7 @@ package employee;
 public class Administrator implements Employee {
     private static Administrator instance;
 
-    private Administrator(){
+    private Administrator() {
 
     }
 

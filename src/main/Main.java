@@ -4,7 +4,6 @@ import auction_house.Adapter;
 import auction_house.AuctionHouse;
 import auction_house.IAdapter;
 import command.Tasks;
-import exceptions.CommandNotFound;
 
 import java.util.Scanner;
 

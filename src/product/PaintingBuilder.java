@@ -22,6 +22,12 @@ public class PaintingBuilder implements ProductBuilder<Painting, PaintingBuilder
     }
 
     @Override
+    public PaintingBuilder withYear(int year) {
+        painting.setYear(year);
+        return this;
+    }
+
+    @Override
     public Painting build() {
         return painting;
     }
