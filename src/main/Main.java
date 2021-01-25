@@ -10,6 +10,8 @@ public class Main {
         IAdapter adapter = new Adapter("data");
         AuctionHouse auctionHouse = AuctionHouse.getInstance(adapter);
         auctionHouse.registerClients();
+        auctionHouse.registerProducts();
         auctionHouse.listClients();
+        auctionHouse.listProducts();
     }
 }

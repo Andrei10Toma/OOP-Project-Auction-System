@@ -19,4 +19,16 @@ public class Jewel extends Product {
     public void setGem(boolean gem) {
         this.gem = gem;
     }
+
+    @Override
+    public String toString() {
+        return "Jewel{" +
+                "id=" + super.getId() +
+                ", name=" + super.getName() +
+                ", minPrice=" + super.getMinPrice() +
+                ", sellPrice=" + super.getSellPrice() +
+                ", material=" + material  +
+                ", gem=" + gem +
+                '}';
+    }
 }

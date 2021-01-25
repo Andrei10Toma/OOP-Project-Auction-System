@@ -4,16 +4,20 @@ import client.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import exceptions.DuplicateClient;
-import product.Product;
+import exceptions.DuplicateClientException;
+import exceptions.DuplicateProductException;
+import product.*;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Adapter implements IAdapter {
-    String filename;
+    private final String filename;
+    private static final String PRODUCT_TYPE = "productType";
+    private static final String MIN_PRICE = "minPrice";
 
     public Adapter(String filename) {
         this.filename = filename;
@@ -42,12 +46,12 @@ public class Adapter implements IAdapter {
                 .build();
     }
 
-    public void addClient(List<Client> clients, Client clientAdd) throws DuplicateClient {
+    public void addClient(List<Client> clients, Client clientAdd) throws DuplicateClientException {
         if (clients.stream().noneMatch(client -> client.getId() == clientAdd.getId())) {
             clients.add(clientAdd);
         }
         else {
-            throw new DuplicateClient("Duplicate with id " + clientAdd.getId() + " already exists");
+            throw new DuplicateClientException("Duplicate with id " + clientAdd.getId() + " already exists");
         }
     }
 
@@ -66,7 +70,7 @@ public class Adapter implements IAdapter {
                     } else {
                         addClient(clients, createLegalPersonClient(clientData));
                     }
-                }catch (DuplicateClient e) {
+                } catch (DuplicateClientException e) {
                     e.printStackTrace();
                 }
             });
@@ -77,8 +81,72 @@ public class Adapter implements IAdapter {
         return new ArrayList<>();
     }
 
+    public void addProduct(List<Product> products, Product productAdd) throws DuplicateProductException {
+        if (products.stream().noneMatch(product -> product.getId() == productAdd.getId())) {
+            products.add(productAdd);
+        }
+        else {
+            throw new DuplicateProductException("Product with id " + productAdd.getId() + " already exists.");
+        }
+    }
+
+    private Product createFurnitureProduct(JsonObject productData) {
+        return new FurnitureBuilder()
+                .withId(productData.get("id").getAsInt())
+                .withName(productData.get("name").getAsString())
+                .withMinPrice(productData.get(MIN_PRICE).getAsDouble())
+                .withType(productData.get("type").getAsString())
+                .withMaterial(productData.get("material").getAsString())
+                .build();
+    }
+
+    private Product createJewelProduct(JsonObject productData) {
+        return new JewelBuilder()
+                .withId(productData.get("id").getAsInt())
+                .withName(productData.get("name").getAsString())
+                .withMinPrice(productData.get(MIN_PRICE).getAsDouble())
+                .withMaterial(productData.get("material").getAsString())
+                .withGem(productData.get("gem").getAsBoolean())
+                .build();
+    }
+
+    private Product createPaintingProduct(JsonObject productData) {
+        return new PaintingBuilder()
+                .withId(productData.get("id").getAsInt())
+                .withName(productData.get("name").getAsString())
+                .withMinPrice(productData.get(MIN_PRICE).getAsDouble())
+                .withColors(Colors.valueOf(productData.get("colors").getAsString()))
+                .withPainterName(productData.get("painterName").getAsString())
+                .build();
+    }
+
     @Override
-    public List<Product> readProduct(String filename) {
+    public List<Product> readProduct() {
+        List<Product> products = new ArrayList<>();
+        Gson gson = new Gson();
+        try {
+            JsonObject data = gson.fromJson(new FileReader(filename), JsonObject.class);
+            JsonArray productArray = data.getAsJsonArray("Products");
+            productArray.forEach(product -> {
+                JsonObject productData = product.getAsJsonObject();
+                try {
+                    if (ProductType.FURNITURE == ProductType.valueOf(productData.get(PRODUCT_TYPE).getAsString())) {
+                        addProduct(products, createFurnitureProduct(productData));
+                    }
+                    else if (ProductType.JEWEL == ProductType.valueOf(productData.get(PRODUCT_TYPE).getAsString())) {
+                        addProduct(products, createJewelProduct(productData));
+                    }
+                    else if (ProductType.PAINTING == ProductType.valueOf(productData.get(PRODUCT_TYPE).getAsString())) {
+                        addProduct(products, createPaintingProduct(productData));
+                    }
+                } catch (DuplicateProductException e) {
+                    e.printStackTrace();
+                }
+            });
+            return products;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return new ArrayList<>();
     }
 }

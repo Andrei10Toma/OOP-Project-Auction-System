@@ -29,6 +29,10 @@ public class AuctionHouse {
         clients = adapter.readClient();
     }
 
+    public void registerProducts() {
+        products = adapter.readProduct();
+    }
+
     public void listClients() {
         System.out.println(clients);
     }

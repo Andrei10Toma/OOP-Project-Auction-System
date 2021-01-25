@@ -19,4 +19,16 @@ public class Painting extends Product{
     public void setColors(Colors colors) {
         this.colors = colors;
     }
+
+    @Override
+    public String toString() {
+        return "Painting{" +
+                "id=" + super.getId() +
+                ", name=" + super.getName() +
+                ", minPrice=" + super.getMinPrice() +
+                ", sellPrice=" + super.getSellPrice() +
+                ", painter name=" + painterName  +
+                ", colors=" + colors +
+                '}';
+    }
 }
