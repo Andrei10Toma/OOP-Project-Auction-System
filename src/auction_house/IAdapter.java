@@ -4,8 +4,9 @@ import client.Client;
 import product.Product;
 
 import java.util.List;
+import java.util.Map;
 
 public interface IAdapter {
-    List<Client> readClient();
-    List<Product> readProduct();
+    Map<Integer, Client> readClient();
+    Map<Integer, Product> readProduct();
 }

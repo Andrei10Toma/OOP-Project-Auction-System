@@ -11,8 +11,8 @@ import product.*;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class Adapter implements IAdapter {
     private final String filename;
@@ -46,9 +46,9 @@ public class Adapter implements IAdapter {
                 .build();
     }
 
-    public void addClient(List<Client> clients, Client clientAdd) throws DuplicateClientException {
-        if (clients.stream().noneMatch(client -> client.getId() == clientAdd.getId())) {
-            clients.add(clientAdd);
+    public void addClient(Map<Integer, Client> clients, Client clientAdd) throws DuplicateClientException {
+        if (!clients.containsKey(clientAdd.getId())) {
+            clients.put(clientAdd.getId(), clientAdd);
         }
         else {
             throw new DuplicateClientException("Duplicate with id " + clientAdd.getId() + " already exists");
@@ -56,8 +56,8 @@ public class Adapter implements IAdapter {
     }
 
     @Override
-    public List<Client> readClient() {
-        List<Client> clients = new ArrayList<>();
+    public Map<Integer, Client> readClient() {
+        Map<Integer, Client> clients = new TreeMap<>();
         Gson gson = new Gson();
         try {
             JsonObject data = gson.fromJson(new FileReader(filename), JsonObject.class);
@@ -78,12 +78,12 @@ public class Adapter implements IAdapter {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        return new ArrayList<>();
+        return new TreeMap<>();
     }
 
-    public void addProduct(List<Product> products, Product productAdd) throws DuplicateProductException {
-        if (products.stream().noneMatch(product -> product.getId() == productAdd.getId())) {
-            products.add(productAdd);
+    public void addProduct(Map<Integer, Product> products, Product productAdd) throws DuplicateProductException {
+        if (!products.containsKey(productAdd.getId())) {
+            products.put(productAdd.getId(), productAdd);
         }
         else {
             throw new DuplicateProductException("Product with id " + productAdd.getId() + " already exists.");
@@ -124,8 +124,8 @@ public class Adapter implements IAdapter {
     }
 
     @Override
-    public List<Product> readProduct() {
-        List<Product> products = new ArrayList<>();
+    public Map<Integer, Product> readProduct() {
+        Map<Integer, Product> products = new TreeMap<>();
         Gson gson = new Gson();
         try {
             JsonObject data = gson.fromJson(new FileReader(filename), JsonObject.class);
@@ -150,6 +150,6 @@ public class Adapter implements IAdapter {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new ArrayList<>();
+        return new TreeMap<>();
     }
 }

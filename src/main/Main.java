@@ -16,7 +16,7 @@ public class Main {
             String command = scanner.nextLine();
             String[] commandComponents = command.split(" ");
             try {
-                Tasks task = Tasks.valueOf(commandComponents[0]);
+                Tasks task = Tasks.valueOf(commandComponents[0].toUpperCase());
                 if (task == Tasks.EXIT) {
                     break;
                 }

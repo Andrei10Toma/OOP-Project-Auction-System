@@ -8,10 +8,10 @@ import product.Product;
 import java.util.*;
 
 public class AuctionHouse {
-    private List<Product> products = new ArrayList<>();
-    private List<Client> clients = new ArrayList<>();
-    private List<Auction> auctions = new ArrayList<>();
-    private List<Broker> brokers = new ArrayList<>();
+    private Map<Integer, Product> products = new TreeMap<>();
+    private Map<Integer, Client> clients = new TreeMap<>();
+    private Map<Integer, Auction> auctions = new TreeMap<>();
+    private Map<Integer, Broker> brokers = new TreeMap<>();
     private static AuctionHouse instance;
     private IAdapter adapter;
 
@@ -26,19 +26,35 @@ public class AuctionHouse {
         return instance;
     }
 
-    public List<Product> getProducts() {
+    public void setProducts(Map<Integer, Product> products) {
+        this.products = products;
+    }
+
+    public void setClients(Map<Integer, Client> clients) {
+        this.clients = clients;
+    }
+
+    public void setAuctions(Map<Integer, Auction> auctions) {
+        this.auctions = auctions;
+    }
+
+    public void setBrokers(Map<Integer, Broker> brokers) {
+        this.brokers = brokers;
+    }
+
+    public Map<Integer, Product> getProducts() {
         return products;
     }
 
-    public List<Client> getClients() {
+    public Map<Integer, Client> getClients() {
         return clients;
     }
 
-    public List<Auction> getAuctions() {
+    public Map<Integer, Auction> getAuctions() {
         return auctions;
     }
 
-    public List<Broker> getBrokers() {
+    public Map<Integer, Broker> getBrokers() {
         return brokers;
     }
 

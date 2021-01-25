@@ -22,11 +22,7 @@ public class Jewel extends Product {
 
     @Override
     public String toString() {
-        return "Jewel{" +
-                "id=" + super.getId() +
-                ", name=" + super.getName() +
-                ", minPrice=" + super.getMinPrice() +
-                ", sellPrice=" + super.getSellPrice() +
+        return "Jewel" + super.toString() +
                 ", material=" + material  +
                 ", gem=" + gem +
                 "}\n";

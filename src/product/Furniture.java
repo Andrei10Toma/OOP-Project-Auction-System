@@ -22,11 +22,7 @@ public class Furniture extends Product {
 
     @Override
     public String toString() {
-        return "Furniture{" +
-                "id=" + super.getId() +
-                ", name=" + super.getName() +
-                ", minPrice=" + super.getMinPrice() +
-                ", sellPrice=" + super.getSellPrice() +
+        return "Furniture" + super.toString() +
                 ", type=" + type  +
                 ", material=" + material +
                 "}\n";

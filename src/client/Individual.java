@@ -3,10 +3,6 @@ package client;
 public class Individual extends Client {
     private String birthDate;
 
-    public Individual() {
-        this.birthDate = "\0";
-    }
-
     public String getBirthDate() {
         return birthDate;
     }
@@ -17,11 +13,7 @@ public class Individual extends Client {
 
     @Override
     public String toString() {
-        return "Individual {name=" + super.getName() +
-                ", id=" + super.getId() +
-                ", address=" + super.getAddress() +
-                ", numberParticipation=" + super.getNumberParticipation() +
-                ", numberAuctionWins=" + super.getNumberAuctionWins() +
+        return "Individual" + super.toString() +
                 ", birthDate=" + birthDate + "}\n";
     }
 }

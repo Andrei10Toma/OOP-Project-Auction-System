@@ -46,4 +46,13 @@ public class Product {
     public void setMinPrice(double minPrice) {
         this.minPrice = minPrice;
     }
+
+    @Override
+    public String toString() {
+        return "{name='" + name + '\'' +
+                ", sellPrice=" + sellPrice +
+                ", minPrice=" + minPrice +
+                ", year=" + year +
+                '}';
+    }
 }

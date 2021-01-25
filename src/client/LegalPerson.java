@@ -22,11 +22,7 @@ public class LegalPerson extends Client {
 
     @Override
     public String toString() {
-        return "LegalPerson {name=" + super.getName() +
-                ", id=" + super.getId() +
-                ", address=" + super.getAddress() +
-                ", numberParticipation=" + super.getNumberParticipation() +
-                ", numberAuctionWins=" + super.getNumberAuctionWins() +
+        return "LegalPerson" + super.toString() +
                 ", socialCapital=" + getSocialCapital() +
                 ", companyType=" + getCompanyType() + "}\n";
     }

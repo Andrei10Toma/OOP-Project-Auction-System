@@ -22,11 +22,7 @@ public class Painting extends Product{
 
     @Override
     public String toString() {
-        return "Painting{" +
-                "id=" + super.getId() +
-                ", name=" + super.getName() +
-                ", minPrice=" + super.getMinPrice() +
-                ", sellPrice=" + super.getSellPrice() +
+        return "Painting" + super.toString() +
                 ", painter name=" + painterName  +
                 ", colors=" + colors +
                 "}\n";
