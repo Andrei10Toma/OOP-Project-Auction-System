@@ -13,23 +13,22 @@ public class Main {
         IAdapter adapter = new Adapter("data");
         AuctionHouse auctionHouse = AuctionHouse.getInstance(adapter);
         Scanner scanner = new Scanner(System.in);
-        while(true) {
+        while (true) {
             String command = scanner.nextLine();
             String[] commandComponents = command.split(" ");
-            Tasks task = Tasks.valueOf(commandComponents[0]);
-            if (task == Tasks.EXIT) {
-                break;
-            }
             try {
+                Tasks task = Tasks.valueOf(commandComponents[0]);
+                if (task == Tasks.EXIT) {
+                    break;
+                }
                 switch (task) {
                     case LIST_CLIENTS -> auctionHouse.listClients();
                     case LIST_PRODUCTS -> auctionHouse.listProducts();
                     case LOAD_CLIENTS -> auctionHouse.registerClients();
                     case LOAD_PRODUCTS -> auctionHouse.registerProducts();
-                    default -> throw new CommandNotFound("Command " + task + " not found.");
+                    default -> throw new IllegalArgumentException("Command " + task + " not found.");
                 }
-            }
-            catch (CommandNotFound e) {
+            } catch (IllegalArgumentException e) {
                 e.printStackTrace();
             }
         }

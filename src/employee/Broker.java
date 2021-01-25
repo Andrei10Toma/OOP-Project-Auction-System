@@ -6,5 +6,5 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Broker implements Employee {
-    List<Client> clients = new ArrayList<>();
+    private List<Client> clients = new ArrayList<>();
 }
