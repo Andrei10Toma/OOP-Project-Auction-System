@@ -29,6 +29,6 @@ public class Jewel extends Product {
                 ", sellPrice=" + super.getSellPrice() +
                 ", material=" + material  +
                 ", gem=" + gem +
-                '}';
+                "}\n";
     }
 }

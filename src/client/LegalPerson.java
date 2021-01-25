@@ -4,10 +4,6 @@ public class LegalPerson extends Client {
     private double socialCapital;
     private Company companyType;
 
-    public LegalPerson() {
-
-    }
-
     public double getSocialCapital() {
         return socialCapital;
     }
@@ -32,6 +28,6 @@ public class LegalPerson extends Client {
                 ", numberParticipation=" + super.getNumberParticipation() +
                 ", numberAuctionWins=" + super.getNumberAuctionWins() +
                 ", socialCapital=" + getSocialCapital() +
-                ", companyType=" + getCompanyType() + "}";
+                ", companyType=" + getCompanyType() + "}\n";
     }
 }

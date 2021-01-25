@@ -29,6 +29,6 @@ public class Furniture extends Product {
                 ", sellPrice=" + super.getSellPrice() +
                 ", type=" + type  +
                 ", material=" + material +
-                '}';
+                "}\n";
     }
 }

@@ -29,6 +29,6 @@ public class Painting extends Product{
                 ", sellPrice=" + super.getSellPrice() +
                 ", painter name=" + painterName  +
                 ", colors=" + colors +
-                '}';
+                "}\n";
     }
 }
