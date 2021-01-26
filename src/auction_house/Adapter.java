@@ -18,6 +18,8 @@ public class Adapter implements IAdapter {
     private final String filename;
     private static final String PRODUCT_TYPE = "productType";
     private static final String MIN_PRICE = "minPrice";
+    private static int clientCounter = 1;
+    private static int productCounter = 1;
 
     public Adapter(String filename) {
         this.filename = filename;
@@ -26,7 +28,7 @@ public class Adapter implements IAdapter {
     private Client createLegalPersonClient(JsonObject clientData) {
         return new LegalPersonBuilder()
                 .withAddress(clientData.get("address").getAsString())
-                .withId(clientData.get("id").getAsInt())
+                .withId(clientCounter)
                 .withName(clientData.get("name").getAsString())
                 .withCompanyType(Company.valueOf(clientData.get("company").getAsString()))
                 .withSocialCapital(clientData.get("socialCapital").getAsDouble())
@@ -38,7 +40,7 @@ public class Adapter implements IAdapter {
     private Client createIndividualClient(JsonObject clientData) {
         return new IndividualBuilder()
                 .withAddress(clientData.get("address").getAsString())
-                .withId(clientData.get("id").getAsInt())
+                .withId(clientCounter)
                 .withName(clientData.get("name").getAsString())
                 .withBirthDate(clientData.get("birthdate").getAsString())
                 .withNumberAuctionWins(0)
@@ -46,9 +48,10 @@ public class Adapter implements IAdapter {
                 .build();
     }
 
-    public void addClient(Map<Integer, Client> clients, Client clientAdd) throws DuplicateClientException {
+    public static void addClient(Map<Integer, Client> clients, ? extends Client clientAdd) throws DuplicateClientException {
         if (!clients.containsKey(clientAdd.getId())) {
             clients.put(clientAdd.getId(), clientAdd);
+            clientCounter++;
         }
         else {
             throw new DuplicateClientException("Duplicate with id " + clientAdd.getId() + " already exists");
@@ -81,9 +84,10 @@ public class Adapter implements IAdapter {
         return new TreeMap<>();
     }
 
-    public void addProduct(Map<Integer, Product> products, Product productAdd) throws DuplicateProductException {
+    public static void addProduct(Map<Integer, Product> products, Product productAdd) throws DuplicateProductException {
         if (!products.containsKey(productAdd.getId())) {
             products.put(productAdd.getId(), productAdd);
+            productCounter++;
         }
         else {
             throw new DuplicateProductException("Product with id " + productAdd.getId() + " already exists.");
@@ -92,18 +96,18 @@ public class Adapter implements IAdapter {
 
     private Product createFurnitureProduct(JsonObject productData) {
         return new FurnitureBuilder()
-                .withId(productData.get("id").getAsInt())
+                .withId(productCounter)
                 .withName(productData.get("name").getAsString())
                 .withMinPrice(productData.get(MIN_PRICE).getAsDouble())
-                .withType(productData.get("type").getAsString())
                 .withYear(productData.get("year").getAsInt())
+                .withType(productData.get("type").getAsString())
                 .withMaterial(productData.get("material").getAsString())
                 .build();
     }
 
     private Product createJewelProduct(JsonObject productData) {
         return new JewelBuilder()
-                .withId(productData.get("id").getAsInt())
+                .withId(productCounter)
                 .withName(productData.get("name").getAsString())
                 .withMinPrice(productData.get(MIN_PRICE).getAsDouble())
                 .withYear(productData.get("year").getAsInt())
@@ -114,7 +118,7 @@ public class Adapter implements IAdapter {
 
     private Product createPaintingProduct(JsonObject productData) {
         return new PaintingBuilder()
-                .withId(productData.get("id").getAsInt())
+                .withId(productCounter)
                 .withName(productData.get("name").getAsString())
                 .withMinPrice(productData.get(MIN_PRICE).getAsDouble())
                 .withYear(productData.get("year").getAsInt())

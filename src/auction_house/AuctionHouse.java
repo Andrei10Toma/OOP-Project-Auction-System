@@ -3,6 +3,7 @@ package auction_house;
 import auction.Auction;
 import client.*;
 import employee.Broker;
+import exceptions.DuplicateProductException;
 import product.Product;
 
 import java.util.*;
@@ -13,7 +14,7 @@ public class AuctionHouse {
     private Map<Integer, Auction> auctions = new TreeMap<>();
     private Map<Integer, Broker> brokers = new TreeMap<>();
     private static AuctionHouse instance;
-    private IAdapter adapter;
+    private final IAdapter adapter;
 
     private AuctionHouse(IAdapter adapter) {
         this.adapter = adapter;
@@ -70,7 +71,19 @@ public class AuctionHouse {
         System.out.println(clients);
     }
 
-    public void listProducts() {
+    public synchronized void listProducts() {
         System.out.println(products);
+    }
+
+    public synchronized void deleteProduct(int id) {
+        products.remove(id);
+    }
+
+    public synchronized void addProduct(Product product) {
+        try {
+            Adapter.addProduct(products, product);
+        } catch (DuplicateProductException e) {
+            e.printStackTrace();
+        }
     }
 }

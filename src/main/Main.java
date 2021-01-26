@@ -1,9 +1,8 @@
 package main;
 
-import auction_house.Adapter;
-import auction_house.AuctionHouse;
-import auction_house.IAdapter;
+import auction_house.*;
 import command.Tasks;
+import product.Product;
 
 import java.util.Scanner;
 
@@ -22,7 +21,9 @@ public class Main {
                 }
                 switch (task) {
                     case LIST_CLIENTS -> auctionHouse.listClients();
-                    case LIST_PRODUCTS -> auctionHouse.listProducts();
+                    case LIST_PRODUCTS -> new Thread(new ListProducts(auctionHouse)).start();
+                    case DELETE_PRODUCT -> new Thread(new DeleteProduct(auctionHouse, Integer.parseInt(commandComponents[1]))).start();
+                    case ADD_PRODUCT -> new Thread(new AddProduct(auctionHouse, new Product())).start();
                     case LOAD_CLIENTS -> auctionHouse.registerClients();
                     case LOAD_PRODUCTS -> auctionHouse.registerProducts();
                     default -> throw new IllegalArgumentException("Command " + task + " not found.");
