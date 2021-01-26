@@ -48,7 +48,7 @@ public class Adapter implements IAdapter {
                 .build();
     }
 
-    public static void addClient(Map<Integer, Client> clients, ? extends Client clientAdd) throws DuplicateClientException {
+    public static void addClient(Map<Integer, Client> clients, Client clientAdd) throws DuplicateClientException {
         if (!clients.containsKey(clientAdd.getId())) {
             clients.put(clientAdd.getId(), clientAdd);
             clientCounter++;
