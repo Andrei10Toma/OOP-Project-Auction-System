@@ -2,21 +2,18 @@
   "Clients": [
     {
       "type": "INDIVIDUAL",
-      "id": 1,
       "name": "Andrei Toma",
       "address": "andrei.toma1009@stud.acs.upb.ro",
       "birthdate": "2000.01.01"
     },
     {
       "type": "INDIVIDUAL",
-      "id": 2,
       "name": "Stan Lucian Mihai",
       "address": "stanlucimihai@gmail.com",
       "birthdate": "2000.01.01"
     },
     {
       "type": "LEGAL",
-      "id": 3,
       "name": "Dragomir Constantin",
       "address": "cos33@yahoo.com",
       "company": "SRL",
@@ -24,14 +21,12 @@
     },
     {
       "type": "INDIVIDUAL",
-      "id": 4,
       "name": "Ilie Alexandru",
       "address": "alex_fcp@gmail.com",
       "birthdate": "2000.01.01"
     },
     {
       "type": "LEGAL",
-      "id": 5,
       "name": "Codrin Toma Alexandru",
       "address": "tomcodrin@gmail.com",
       "company": "SA",
@@ -39,7 +34,6 @@
     },
     {
       "type": "INDIVIDUAL",
-      "id": 6,
       "name": "Aldea Raluca Ioana",
       "address": "raluca_ioana_33@yahoo.com",
       "birthdate": "2000.01.01"
@@ -48,7 +42,6 @@
   "Products": [
     {
       "productType": "FURNITURE",
-      "id": 1,
       "name": "Wardrobe IKEA",
       "minPrice": 100,
       "year": 1990,
@@ -57,7 +50,6 @@
     },
     {
       "productType": "FURNITURE",
-      "id": 2,
       "name": "Couch LEM'S",
       "minPrice": 300,
       "year": 1980,
@@ -66,7 +58,6 @@
     },
     {
       "productType": "JEWEL",
-      "id": 3,
       "name": "Necklace Pandora",
       "minPrice": 600,
       "year": 2005,
@@ -75,7 +66,6 @@
     },
     {
       "productType": "PAINTING",
-      "id": 4,
       "name": "Mona Lisa",
       "minPrice": 2000,
       "year": 1870,
@@ -93,7 +83,6 @@
     },
     {
       "productType": "FURNITURE",
-      "id": 6,
       "name": "Billiard Table Jack",
       "minPrice": 850,
       "year": 1900,
@@ -102,7 +91,6 @@
     },
     {
       "productType": "PAINTING",
-      "id": 7,
       "name": "Carul cu boi",
       "minPrice": 420,
       "year": 1920,
@@ -111,7 +99,6 @@
     },
     {
       "productType": "PAINTING",
-      "id": 8,
       "name": "Self Portrait",
       "minPrice": 3000,
       "year": 1850,
@@ -120,7 +107,6 @@
     },
     {
       "productType": "FURNITURE",
-      "id": 9,
       "name": "Glass Table Carmen",
       "minPrice": 600,
       "year": 2017,
@@ -129,7 +115,6 @@
     },
     {
       "productType": "FURNITURE",
-      "id": 10,
       "name": "Couch Good Night",
       "minPrice": 500,
       "year": 2016,
@@ -138,7 +123,6 @@
     },
     {
       "productType": "FURNITURE",
-      "id": 11,
       "name": "Bed Good Night",
       "minPrice": 900,
       "year": 2019,
@@ -147,7 +131,6 @@
     },
     {
       "productType": "JEWEL",
-      "id": 12,
       "name": "Ring Pandora",
       "minPrice": 300,
       "year": 2017,
@@ -156,7 +139,6 @@
     },
     {
       "productType": "JEWEL",
-      "id": 13,
       "name": "Boys Police Necklace",
       "minPrice": 200,
       "year": 2020,
@@ -165,7 +147,6 @@
     },
     {
       "productType": "JEWEL",
-      "id": 14,
       "name": "Diesel Ring Boys",
       "minPrice": 150,
       "year": 2019,
@@ -174,7 +155,6 @@
     },
     {
       "productType": "PAINTING",
-      "id": 15,
       "name": "Guernica",
       "minPrice": 5000,
       "year": 1940,

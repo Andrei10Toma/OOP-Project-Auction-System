@@ -3,7 +3,6 @@ package auction_house;
 import auction.Auction;
 import client.*;
 import employee.Broker;
-import exceptions.DuplicateProductException;
 import product.Product;
 
 import java.util.*;
@@ -60,11 +59,11 @@ public class AuctionHouse {
     }
 
     public void registerClients() {
-        clients = adapter.readClient();
+        adapter.readClient(clients);
     }
 
     public void registerProducts() {
-        products = adapter.readProduct();
+        adapter.readProduct(products);
     }
 
     public void listClients() {
@@ -73,17 +72,5 @@ public class AuctionHouse {
 
     public synchronized void listProducts() {
         System.out.println(products);
-    }
-
-    public synchronized void deleteProduct(int id) {
-        products.remove(id);
-    }
-
-    public synchronized void addProduct(Product product) {
-        try {
-            Adapter.addProduct(products, product);
-        } catch (DuplicateProductException e) {
-            e.printStackTrace();
-        }
     }
 }

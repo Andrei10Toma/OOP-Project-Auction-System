@@ -1,6 +1,6 @@
 package client;
 
-public class Client {
+public abstract class Client {
     private int id;
     private String name;
     private String address;

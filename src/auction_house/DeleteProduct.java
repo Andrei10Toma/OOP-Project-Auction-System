@@ -1,16 +1,26 @@
 package auction_house;
 
+import employee.Administrator;
+import employee.Employee;
+import product.Product;
+
+import java.util.Map;
+
 public class DeleteProduct implements Runnable {
-    private final AuctionHouse auctionHouse;
+    private final Employee broker;
+    private final Map<Integer, Product> productMap;
     private final int id;
 
-    public DeleteProduct(AuctionHouse auctionHouse, int id) {
-        this.auctionHouse = auctionHouse;
+    public DeleteProduct(Employee broker, Map<Integer, Product> productMap, int id) {
+        this.productMap = productMap;
         this.id = id;
+        this.broker = broker;
     }
 
     @Override
     public void run() {
-        auctionHouse.deleteProduct(id);
+        synchronized (productMap) {
+            broker.deleteProduct(id, productMap);
+        }
     }
 }

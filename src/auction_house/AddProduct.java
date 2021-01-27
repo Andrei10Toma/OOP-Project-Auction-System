@@ -1,18 +1,25 @@
 package auction_house;
 
+import employee.Administrator;
+import employee.Employee;
 import product.Product;
 
-public class AddProduct implements Runnable {
-    private final AuctionHouse auctionHouse;
-    private final Product productAdd;
+import java.util.Map;
 
-    public AddProduct(AuctionHouse auctionHouse, Product productAdd) {
-        this.auctionHouse = auctionHouse;
+public class AddProduct implements Runnable {
+    private final Map<Integer, Product> productMap;
+    private final Product productAdd;
+    private final Employee admin = Administrator.getInstance();
+
+    public AddProduct(Map<Integer, Product> productMap, Product productAdd) {
+        this.productMap = productMap;
         this.productAdd = productAdd;
     }
 
     @Override
     public void run() {
-        auctionHouse.addProduct(productAdd);
+        synchronized (productMap) {
+            admin.addProduct(productAdd, productMap);
+        }
     }
 }

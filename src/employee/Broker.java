@@ -1,25 +1,32 @@
 package employee;
 
 import client.Client;
+import exceptions.BrokerAddProductException;
+import exceptions.ProductNotFound;
+import product.Product;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class Broker implements Employee {
-    private List<Client> clients = new ArrayList<>();
+    private Map<Integer, Map<Integer, Client>> clientsMap = new TreeMap<>();
     private int accumulatedSum;
+    private final int id;
 
-    public Broker(List<Client> clients) {
-        this.clients = clients;
-        accumulatedSum = 0;
+    public Broker(int id) {
+        this.id = id;
     }
 
-    public List<Client> getClients() {
-        return clients;
+    public Map<Integer, Map<Integer, Client>> getClientsMap() {
+        return clientsMap;
     }
 
-    public void setClients(List<Client> clients) {
-        this.clients = clients;
+    public int getId() {
+        return id;
+    }
+
+    public void setClientsMap(Map<Integer, Map<Integer, Client>> clientsMap) {
+        this.clientsMap = clientsMap;
     }
 
     public int getAccumulatedSum() {
@@ -28,5 +35,28 @@ public class Broker implements Employee {
 
     public void setAccumulatedSum(int accumulatedSum) {
         this.accumulatedSum = accumulatedSum;
+    }
+
+    @Override
+    public void addProduct(Product product, Map<Integer, Product> productMap) {
+        try {
+            throw new BrokerAddProductException("Brokers can't add products");
+        }
+        catch (BrokerAddProductException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void deleteProduct(int productId, Map<Integer, Product> productMap) {
+        try {
+            if (productMap.containsKey(productId)) {
+                productMap.remove(productId);
+            } else {
+                throw new ProductNotFound("Product with " + productId + " was not found.");
+            }
+        } catch (ProductNotFound e) {
+            e.printStackTrace();
+        }
     }
 }
