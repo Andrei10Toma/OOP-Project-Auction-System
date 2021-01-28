@@ -35,6 +35,8 @@ public class LegalPersonBuilder implements ClientBuilder<LegalPerson, LegalPerso
 
     @Override
     public LegalPerson build() {
+        legalPerson.setId(Client.counterClients);
+        Client.updateCounter();
         return legalPerson;
     }
 

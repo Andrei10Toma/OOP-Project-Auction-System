@@ -12,14 +12,11 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class Adapter implements IAdapter {
     private final String filename;
     private static final String PRODUCT_TYPE = "productType";
     private static final String MIN_PRICE = "minPrice";
-    private static int counterClients = 1;
-    private static int counterProdcts = 1;
 
     public Adapter(String filename) {
         this.filename = filename;
@@ -28,7 +25,6 @@ public class Adapter implements IAdapter {
     private Client createLegalPersonClient(JsonObject clientData) {
         return new LegalPersonBuilder()
                 .withAddress(clientData.get("address").getAsString())
-                .withId(counterClients)
                 .withName(clientData.get("name").getAsString())
                 .withCompanyType(Company.valueOf(clientData.get("company").getAsString()))
                 .withSocialCapital(clientData.get("socialCapital").getAsDouble())
@@ -40,7 +36,6 @@ public class Adapter implements IAdapter {
     private Client createIndividualClient(JsonObject clientData) {
         return new IndividualBuilder()
                 .withAddress(clientData.get("address").getAsString())
-                .withId(counterClients)
                 .withName(clientData.get("name").getAsString())
                 .withBirthDate(clientData.get("birthdate").getAsString())
                 .withNumberAuctionWins(0)
@@ -48,10 +43,9 @@ public class Adapter implements IAdapter {
                 .build();
     }
 
-    public static void addClient(Map<Integer, Client> clients, Client clientAdd) throws DuplicateClientException {
+    public void addClient(Map<Integer, Client> clients, Client clientAdd) throws DuplicateClientException {
         if (!clients.containsKey(clientAdd.getId())) {
             clients.put(clientAdd.getId(), clientAdd);
-            counterClients++;
         }
         else {
             throw new DuplicateClientException("Duplicate with id " + clientAdd.getId() + " already exists");
@@ -84,9 +78,8 @@ public class Adapter implements IAdapter {
         System.out.println("Couldn't read the clients information.");
     }
 
-    public static void addProduct(Map<Integer, Product> products, Product productAdd) throws DuplicateProductException {
+    public void addProduct(Map<Integer, Product> products, Product productAdd) throws DuplicateProductException {
         if (!products.containsKey(productAdd.getId())) {
-            counterProdcts++;
             products.put(productAdd.getId(), productAdd);
         }
         else {
@@ -96,7 +89,6 @@ public class Adapter implements IAdapter {
 
     private Product createFurnitureProduct(JsonObject productData) {
         return new FurnitureBuilder()
-                .withId(counterProdcts)
                 .withName(productData.get("name").getAsString())
                 .withMinPrice(productData.get(MIN_PRICE).getAsDouble())
                 .withYear(productData.get("year").getAsInt())
@@ -107,7 +99,6 @@ public class Adapter implements IAdapter {
 
     private Product createJewelProduct(JsonObject productData) {
         return new JewelBuilder()
-                .withId(counterProdcts)
                 .withName(productData.get("name").getAsString())
                 .withMinPrice(productData.get(MIN_PRICE).getAsDouble())
                 .withYear(productData.get("year").getAsInt())
@@ -118,7 +109,6 @@ public class Adapter implements IAdapter {
 
     private Product createPaintingProduct(JsonObject productData) {
         return new PaintingBuilder()
-                .withId(counterProdcts)
                 .withName(productData.get("name").getAsString())
                 .withMinPrice(productData.get(MIN_PRICE).getAsDouble())
                 .withYear(productData.get("year").getAsInt())

@@ -29,6 +29,8 @@ public class FurnitureBuilder implements ProductBuilder<Furniture, FurnitureBuil
 
     @Override
     public Furniture build() {
+        furniture.setId(Product.counterProducts);
+        Product.updateCounter();
         return furniture;
     }
 

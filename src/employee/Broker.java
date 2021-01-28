@@ -1,32 +1,36 @@
 package employee;
 
 import client.Client;
-import exceptions.BrokerAddProductException;
 import exceptions.ProductNotFound;
 import product.Product;
 
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import org.apache.commons.lang3.tuple.Pair;
 
 public class Broker implements Employee {
-    private Map<Integer, Map<Integer, Client>> clientsMap = new TreeMap<>();
+    // a map with keys: auctionId and values: the clients that are assigned to this broker that will attend the auction
+    private Map<Integer, List<Pair<Client, Double>>> clients = new TreeMap<>();
     private int accumulatedSum;
     private final int id;
+    private static int counterBroker = 1;
 
-    public Broker(int id) {
-        this.id = id;
+    public Broker() {
+        this.id = counterBroker;
+        counterBroker++;
     }
 
-    public Map<Integer, Map<Integer, Client>> getClientsMap() {
-        return clientsMap;
+    public Map<Integer, List<Pair<Client, Double>>> getClients() {
+        return clients;
     }
 
     public int getId() {
         return id;
     }
 
-    public void setClientsMap(Map<Integer, Map<Integer, Client>> clientsMap) {
-        this.clientsMap = clientsMap;
+    public void setClients(Map<Integer, List<Pair<Client, Double>>> clients) {
+        this.clients = clients;
     }
 
     public int getAccumulatedSum() {
@@ -39,12 +43,7 @@ public class Broker implements Employee {
 
     @Override
     public void addProduct(Product product, Map<Integer, Product> productMap) {
-        try {
-            throw new BrokerAddProductException("Brokers can't add products");
-        }
-        catch (BrokerAddProductException e) {
-            e.printStackTrace();
-        }
+        System.out.println("Brokers can't add products to the auction house");
     }
 
     @Override
@@ -58,5 +57,13 @@ public class Broker implements Employee {
         } catch (ProductNotFound e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Broker_" + id + "{" +
+                "clientsMap=" + clients +
+                ", accumulatedSum=" + accumulatedSum +
+                "}\n";
     }
 }

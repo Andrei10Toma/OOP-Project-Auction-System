@@ -29,6 +29,8 @@ public class PaintingBuilder implements ProductBuilder<Painting, PaintingBuilder
 
     @Override
     public Painting build() {
+        painting.setId(Product.counterProducts);
+        Product.updateCounter();
         return painting;
     }
 

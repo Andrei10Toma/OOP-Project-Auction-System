@@ -6,6 +6,7 @@ public abstract class Product {
     private double sellPrice;
     private double minPrice;
     private int year;
+    protected static int counterProducts = 1;
 
     public int getYear() {
         return year;
@@ -45,6 +46,10 @@ public abstract class Product {
 
     public void setMinPrice(double minPrice) {
         this.minPrice = minPrice;
+    }
+
+    protected static void updateCounter() {
+        counterProducts++;
     }
 
     @Override

@@ -1,6 +1,5 @@
 package employee;
 
-import exceptions.AdministratorCantDeleteProducts;
 import exceptions.DuplicateProductException;
 import product.Product;
 
@@ -32,11 +31,6 @@ public class Administrator implements Employee {
 
     @Override
     public void deleteProduct(int productId, Map<Integer, Product> productMap) {
-        try {
-            throw new AdministratorCantDeleteProducts("Administrators can't delete products.");
-        }
-        catch (AdministratorCantDeleteProducts e) {
-            e.printStackTrace();
-        }
+        System.out.println("Administrator can't delete products");
     }
 }

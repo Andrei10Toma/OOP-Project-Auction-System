@@ -18,8 +18,6 @@ public class AddProduct implements Runnable {
 
     @Override
     public void run() {
-        synchronized (productMap) {
-            admin.addProduct(productAdd, productMap);
-        }
+        admin.addProduct(productAdd, productMap);
     }
 }

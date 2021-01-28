@@ -29,6 +29,8 @@ public class JewelBuilder implements ProductBuilder<Jewel, JewelBuilder> {
 
     @Override
     public Jewel build() {
+        jewel.setId(Product.counterProducts);
+        Product.updateCounter();
         return jewel;
     }
 

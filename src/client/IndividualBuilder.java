@@ -36,6 +36,8 @@ public class IndividualBuilder implements ClientBuilder<Individual, IndividualBu
 
     @Override
     public Individual build() {
+        individual.setId(Client.counterClients);
+        Client.updateCounter();
         return individual;
     }
 

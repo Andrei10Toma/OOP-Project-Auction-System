@@ -6,6 +6,16 @@ public abstract class Client {
     private String address;
     private int numberParticipation;
     private int numberAuctionWins;
+    private double maxPricePaidForAProduct;
+    protected static int counterClients = 1;
+
+    public double getMaxPricePaidForAProduct() {
+        return maxPricePaidForAProduct;
+    }
+
+    public void setMaxPricePaidForAProduct(double maxPricePaidForAProduct) {
+        this.maxPricePaidForAProduct = maxPricePaidForAProduct;
+    }
 
     public int getId() {
         return id;
@@ -45,6 +55,10 @@ public abstract class Client {
 
     public void setNumberAuctionWins(int numberAuctionWins) {
         this.numberAuctionWins = numberAuctionWins;
+    }
+
+    protected static void updateCounter() {
+        counterClients++;
     }
 
     @Override

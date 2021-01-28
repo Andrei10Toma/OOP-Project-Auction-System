@@ -1,6 +1,5 @@
 package auction_house;
 
-import employee.Administrator;
 import employee.Employee;
 import product.Product;
 
@@ -19,8 +18,6 @@ public class DeleteProduct implements Runnable {
 
     @Override
     public void run() {
-        synchronized (productMap) {
-            broker.deleteProduct(id, productMap);
-        }
+        broker.deleteProduct(id, productMap);
     }
 }
