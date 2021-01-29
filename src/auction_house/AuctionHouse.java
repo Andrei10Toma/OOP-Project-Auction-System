@@ -147,8 +147,12 @@ public class AuctionHouse {
         }
         System.out.println("Client " + clientId + " assigned successfully.");
         if (auctions.get(productId).getActualNumberOfParticipants() == auctions.get(productId).getNumberParticipants()) {
-            auctions.get(productId).startAuction();
+            auctions.get(productId).startAuction(brokers, products.get(productId).getMinPrice());
         }
+    }
+
+    public double calculateMaxBid(Map<Integer, Double> bidMap) {
+        return Collections.max(bidMap.values());
     }
 
     public void listBrokers() {
