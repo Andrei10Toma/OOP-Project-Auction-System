@@ -1,12 +1,9 @@
 package auction_house;
 
 import auction.Auction;
-import client.*;
+import client.Client;
 import employee.Broker;
-import exceptions.BrokerNotFound;
-import exceptions.ClientAlreadyEnroledForAuction;
-import exceptions.ClientNotFound;
-import exceptions.ProductNotFound;
+import exceptions.*;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import product.Product;
 
@@ -91,19 +88,18 @@ public class AuctionHouse {
         System.out.println("Generated " + numberOfBrokers + " brokers.");
     }
 
-    private void addAuctionForProduct(int clientId, int productId, double maxPricePaidByClient) throws BrokerNotFound {
+    private void addAuctionForProduct(int clientId, int productId, double maxPricePaidByClient) throws BrokerNotFound, MaxPriceLessThanMinimumPrice {
         auctions.put(productId, new Auction(random.nextInt(clients.size() - 1) + 2, productId));
         int randomBroker = random.nextInt(brokers.size());
         if (brokers.stream().anyMatch(broker -> randomBroker + 1 == broker.getId())) {
             addClientToAuctionAssignBroker(clientId, productId, maxPricePaidByClient, randomBroker);
-        }
-        else {
+        } else {
             throw new BrokerNotFound("Broker with id " + randomBroker + " not found.");
         }
     }
 
     private void addClientToAuction(int clientId, int productId, double maxPricePaidByClient)
-            throws ClientAlreadyEnroledForAuction, BrokerNotFound {
+            throws ClientAlreadyEnroledForAuction, BrokerNotFound, MaxPriceLessThanMinimumPrice {
         if (brokers.stream()
                 .filter(broker -> broker.getClients().get(productId) != null)
                 .anyMatch(broker -> broker.getClients().get(productId).stream()
@@ -115,24 +111,25 @@ public class AuctionHouse {
         if (brokers.stream().anyMatch(broker -> randomBroker + 1 == broker.getId())) {
             if (brokers.get(randomBroker).getClients().containsKey(productId)) {
                 brokers.get(randomBroker).getClients().get(productId).add(new ImmutablePair<>(clients.get(clientId), maxPricePaidByClient));
-            }
-            else {
+            } else {
                 addClientToAuctionAssignBroker(clientId, productId, maxPricePaidByClient, randomBroker);
             }
             auctions.get(productId).setActualNumberOfParticipants(auctions.get(productId).getActualNumberOfParticipants() + 1);
-        }
-        else {
+        } else {
             throw new BrokerNotFound("Broker with id " + randomBroker + " not found.");
         }
     }
 
-    private void addClientToAuctionAssignBroker(int clientId, int productId, double maxPricePaidByClient, int randomBroker) {
+    private void addClientToAuctionAssignBroker(int clientId, int productId, double maxPricePaidByClient, int randomBroker) throws MaxPriceLessThanMinimumPrice {
+        if (maxPricePaidByClient < products.get(productId).getMinPrice()) {
+            throw new MaxPriceLessThanMinimumPrice("Client with " + clientId + " paid too less for the product " + productId + ".");
+        }
         brokers.get(randomBroker).getClients().put(productId, new ArrayList<>());
         brokers.get(randomBroker).getClients().get(productId).add(new ImmutablePair<>(clients.get(clientId), maxPricePaidByClient));
     }
 
     public void checkAuction(int clientId, int productId, double maxPricePaidByClient)
-            throws ProductNotFound, ClientNotFound, BrokerNotFound, ClientAlreadyEnroledForAuction {
+            throws ProductNotFound, ClientNotFound, BrokerNotFound, ClientAlreadyEnroledForAuction, MaxPriceLessThanMinimumPrice {
         if (!products.containsKey(productId)) {
             throw new ProductNotFound("Product with id " + productId + " was not found.");
         }
@@ -141,8 +138,7 @@ public class AuctionHouse {
         }
         if (!auctions.containsKey(productId)) {
             addAuctionForProduct(clientId, productId, maxPricePaidByClient);
-        }
-        else {
+        } else {
             addClientToAuction(clientId, productId, maxPricePaidByClient);
         }
         System.out.println("Client " + clientId + " assigned successfully.");

@@ -2,10 +2,7 @@ package main;
 
 import auction_house.*;
 import command.Tasks;
-import exceptions.BrokerNotFound;
-import exceptions.ClientAlreadyEnroledForAuction;
-import exceptions.ClientNotFound;
-import exceptions.ProductNotFound;
+import exceptions.*;
 
 import java.util.Scanner;
 
@@ -24,14 +21,14 @@ public class Main {
                     break;
                 }
                 interpretCommand(auctionHouse, commandComponents, task);
-            } catch (IllegalArgumentException | ClientNotFound | ProductNotFound | BrokerNotFound | ClientAlreadyEnroledForAuction e) {
+            } catch (IllegalArgumentException | ClientNotFound | ProductNotFound | BrokerNotFound | ClientAlreadyEnroledForAuction | MaxPriceLessThanMinimumPrice e) {
                 e.printStackTrace();
             }
         }
     }
 
     private static void interpretCommand(AuctionHouse auctionHouse, String[] commandComponents, Tasks task)
-            throws ProductNotFound, ClientNotFound, BrokerNotFound, ClientAlreadyEnroledForAuction {
+            throws ProductNotFound, ClientNotFound, BrokerNotFound, ClientAlreadyEnroledForAuction, MaxPriceLessThanMinimumPrice {
         switch (task) {
             case GENERATE_BROKERS -> auctionHouse.generateBrokers();
             case LIST_BROKERS -> auctionHouse.listBrokers();
