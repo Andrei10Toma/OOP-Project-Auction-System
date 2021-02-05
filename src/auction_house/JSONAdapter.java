@@ -13,12 +13,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Map;
 
-public class Adapter implements IAdapter {
+public class JSONAdapter implements IAdapter {
     private final String filename;
     private static final String PRODUCT_TYPE = "productType";
     private static final String MIN_PRICE = "minPrice";
 
-    public Adapter(String filename) {
+    public JSONAdapter(String filename) {
         this.filename = filename;
     }
 

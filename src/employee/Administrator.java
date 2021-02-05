@@ -1,5 +1,6 @@
 package employee;
 
+import auction_house.IAdapter;
 import exceptions.DuplicateProductException;
 import product.Product;
 
@@ -13,6 +14,10 @@ public class Administrator implements Employee {
             instance = new Administrator();
         }
         return instance;
+    }
+
+    public void readProducts(IAdapter adapter, Map<Integer, Product> productMap) {
+        adapter.readProduct(productMap);
     }
 
     @Override

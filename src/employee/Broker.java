@@ -41,9 +41,41 @@ public class Broker implements Employee {
         this.accumulatedSum = accumulatedSum;
     }
 
+    public void requestClientsSum(int auctionId, double lastBid, Map<Integer, Double> bidMap) {
+        clients.get(auctionId)
+                .forEach(pairClientsMaxPrice -> {
+                    if (bidMap.containsKey(pairClientsMaxPrice.getKey().getId())) {
+                        double bidSum = pairClientsMaxPrice.getKey().calculateBid(lastBid, pairClientsMaxPrice.getValue());
+                        if (bidSum <= pairClientsMaxPrice.getValue()) {
+                            bidMap.put(pairClientsMaxPrice.getKey().getId(), bidSum);
+                        }
+                        else {
+                            System.out.println("Client " + pairClientsMaxPrice.getKey().getId() + " exits the auction because he can't bid.");
+                            bidMap.remove(pairClientsMaxPrice.getKey().getId());
+                        }
+                    }
+                });
+    }
+
+    public void informClientsAboutMaxSum(int auctionId, double maxBid, Map<Integer, Double> bidMap) {
+        clients.get(auctionId)
+                .forEach(pairClientMaxPrice -> {
+                    if (bidMap.containsKey(pairClientMaxPrice.getKey().getId())) {
+                        if (pairClientMaxPrice.getValue() >= maxBid) {
+                            bidMap.put(pairClientMaxPrice.getKey().getId(), maxBid);
+                        } else {
+                            if (bidMap.size() != 1) {
+                                System.out.println("Client " + pairClientMaxPrice.getKey().getId() + " exits the auction because max bid is bigger.");
+                                bidMap.remove(pairClientMaxPrice.getKey().getId());
+                            }
+                        }
+                    }
+                });
+    }
+
     @Override
     public void addProduct(Product product, Map<Integer, Product> productMap) {
-        System.out.println("Brokers can't add products to the auction house");
+        System.err.println("Brokers can't add products to the auction house");
     }
 
     @Override

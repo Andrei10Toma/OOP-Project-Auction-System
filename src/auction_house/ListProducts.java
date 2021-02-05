@@ -9,6 +9,8 @@ public class ListProducts implements Runnable {
 
     @Override
     public void run() {
-        auctionHouse.listProducts();
+        synchronized (auctionHouse.getProducts()) {
+            auctionHouse.listProducts();
+        }
     }
 }

@@ -9,9 +9,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter the JSON file where the data about products and clients is found: ");
-        IAdapter adapter = new Adapter(scanner.nextLine());
-        AuctionHouse auctionHouse = AuctionHouse.getInstance(adapter);
+        AuctionHouse auctionHouse = AuctionHouse.getInstance();
         while (true) {
             String command = scanner.nextLine();
             String[] commandComponents = command.split(" ");
@@ -21,14 +19,15 @@ public class Main {
                     break;
                 }
                 interpretCommand(auctionHouse, commandComponents, task);
-            } catch (IllegalArgumentException | ClientNotFound | ProductNotFound | BrokerNotFound | ClientAlreadyEnroledForAuction | MaxPriceLessThanMinimumPrice e) {
+            } catch (IllegalArgumentException | ClientNotFound | ProductNotFound | BrokerNotFound
+                    | ClientAlreadyEnroledForAuction | MaxPriceLessThanMinimumPrice | NotEnoughBrokers e) {
                 e.printStackTrace();
             }
         }
     }
 
     private static void interpretCommand(AuctionHouse auctionHouse, String[] commandComponents, Tasks task)
-            throws ProductNotFound, ClientNotFound, BrokerNotFound, ClientAlreadyEnroledForAuction, MaxPriceLessThanMinimumPrice {
+            throws ProductNotFound, ClientNotFound, BrokerNotFound, ClientAlreadyEnroledForAuction, MaxPriceLessThanMinimumPrice, NotEnoughBrokers {
         switch (task) {
             case GENERATE_BROKERS -> auctionHouse.generateBrokers();
             case LIST_BROKERS -> auctionHouse.listBrokers();

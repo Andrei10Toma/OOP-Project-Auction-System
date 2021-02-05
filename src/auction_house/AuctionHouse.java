@@ -2,29 +2,34 @@ package auction_house;
 
 import auction.Auction;
 import client.Client;
+import employee.Administrator;
 import employee.Broker;
 import exceptions.*;
 import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import product.Product;
 
 import java.util.*;
 
+import static auction.Auction.AUCTION_STRING;
+import static auction.Auction.ENDED;
+
 public class AuctionHouse {
+    public static final String CLIENT = "Client ";
     private Map<Integer, Product> products = Collections.synchronizedMap(new TreeMap<>());
     private Map<Integer, Client> clients = new TreeMap<>();
     private Map<Integer, Auction> auctions = new TreeMap<>();
     private List<Broker> brokers = new ArrayList<>();
-    private final Random random = new Random();
+    private final Administrator administrator = Administrator.getInstance();
     private static AuctionHouse instance;
-    private final IAdapter adapter;
+    private IAdapter adapter;
 
-    private AuctionHouse(IAdapter adapter) {
-        this.adapter = adapter;
-    }
-
-    public static AuctionHouse getInstance(IAdapter adapter) {
+    public static AuctionHouse getInstance() {
+        Scanner scanner = new Scanner(System.in);
         if (instance == null) {
-            instance = new AuctionHouse(adapter);
+            System.out.print("Enter the name of the JSON where the data is located: ");
+            instance = new AuctionHouse();
+            instance.adapter = new JSONAdapter(scanner.next());
         }
         return instance;
     }
@@ -66,7 +71,7 @@ public class AuctionHouse {
     }
 
     public void registerProducts() {
-        adapter.readProduct(products);
+        administrator.readProducts(adapter, products);
     }
 
     public void listClients() {
@@ -80,7 +85,7 @@ public class AuctionHouse {
     public void generateBrokers() {
         int minimumNumberBrokers = 2;
         int maximumNumberBrokers = 10;
-        int numberOfBrokers = random.nextInt(maximumNumberBrokers - minimumNumberBrokers) + minimumNumberBrokers;
+        int numberOfBrokers = new Random().nextInt(maximumNumberBrokers - minimumNumberBrokers) + minimumNumberBrokers;
         for (int i = 0; i < numberOfBrokers; i++) {
             Broker brokerAdd = new Broker();
             brokers.add(brokerAdd);
@@ -89,8 +94,8 @@ public class AuctionHouse {
     }
 
     private void addAuctionForProduct(int clientId, int productId, double maxPricePaidByClient) throws BrokerNotFound, MaxPriceLessThanMinimumPrice {
-        auctions.put(productId, new Auction(random.nextInt(clients.size() - 1) + 2, productId));
-        int randomBroker = random.nextInt(brokers.size());
+        auctions.put(productId, new Auction(new Random().nextInt(clients.size() - 1) + 2, productId));
+        int randomBroker = new Random().nextInt(brokers.size());
         if (brokers.stream().anyMatch(broker -> randomBroker + 1 == broker.getId())) {
             addClientToAuctionAssignBroker(clientId, productId, maxPricePaidByClient, randomBroker);
         } else {
@@ -107,7 +112,7 @@ public class AuctionHouse {
             throw new ClientAlreadyEnroledForAuction("Client with id " + clientId + " already enrolled at auction. "
                     + productId);
         }
-        int randomBroker = random.nextInt(brokers.size());
+        int randomBroker = new Random().nextInt(brokers.size());
         if (brokers.stream().anyMatch(broker -> randomBroker + 1 == broker.getId())) {
             if (brokers.get(randomBroker).getClients().containsKey(productId)) {
                 brokers.get(randomBroker).getClients().get(productId).add(new ImmutablePair<>(clients.get(clientId), maxPricePaidByClient));
@@ -129,7 +134,10 @@ public class AuctionHouse {
     }
 
     public void checkAuction(int clientId, int productId, double maxPricePaidByClient)
-            throws ProductNotFound, ClientNotFound, BrokerNotFound, ClientAlreadyEnroledForAuction, MaxPriceLessThanMinimumPrice {
+            throws ProductNotFound, ClientNotFound, BrokerNotFound, ClientAlreadyEnroledForAuction, MaxPriceLessThanMinimumPrice, NotEnoughBrokers {
+        if (brokers.size() < 2) {
+            throw new NotEnoughBrokers("Not enough brokers were generated.");
+        }
         if (!products.containsKey(productId)) {
             throw new ProductNotFound("Product with id " + productId + " was not found.");
         }
@@ -141,14 +149,39 @@ public class AuctionHouse {
         } else {
             addClientToAuction(clientId, productId, maxPricePaidByClient);
         }
-        System.out.println("Client " + clientId + " assigned successfully.");
-        if (auctions.get(productId).getActualNumberOfParticipants() == auctions.get(productId).getNumberParticipants()) {
+        System.out.println(CLIENT + clientId + " assigned successfully at auction for product " + productId + "." );
+        if (auctions.get(productId).canStart()) {
             auctions.get(productId).startAuction(brokers, products.get(productId).getMinPrice());
         }
     }
 
-    public double calculateMaxBid(Map<Integer, Double> bidMap) {
-        return Collections.max(bidMap.values());
+    public double calculateMaxBid(Map<Integer, Double> bidMap, int auctionId) {
+        double maxBid = Collections.max(bidMap.values());
+        brokers.stream().filter(broker -> broker.getClients().get(auctionId) != null)
+                .forEach(broker -> broker.informClientsAboutMaxSum(auctionId, maxBid, bidMap));
+        return maxBid;
+    }
+
+    public void declareTheWinnerOfTheAuction(Map<Integer, Double> bidMap,
+                                             List<Broker> brokersWithClientInAuction, int auctionId) {
+        double winnerBid = Double.MIN_VALUE;
+        for (Broker broker : brokersWithClientInAuction) {
+            for (Pair<Client, Double> pair : broker.getClients().get(auctionId)) {
+                if (bidMap.containsKey(pair.getKey().getId())) {
+                    if (bidMap.get(pair.getKey().getId()) > winnerBid) {
+                        winnerBid = bidMap.get(pair.getKey().getId());
+                        auctions.get(auctionId).setWinnerClient(pair.getKey());
+                    } else if (bidMap.get(pair.getKey().getId()) == winnerBid &&
+                            auctions.get(auctionId).getWinnerClient().getNumberAuctionWins() < pair.getKey().getNumberAuctionWins()) {
+                        auctions.get(auctionId).setWinnerClient(pair.getKey());
+                    }
+                }
+            }
+        }
+        System.out.println();
+        System.out.println(CLIENT + auctions.get(auctionId).getWinnerClient().getId() +
+                " wins the auction for product " + auctionId + ".");
+        System.out.println(AUCTION_STRING + auctionId + ENDED);
     }
 
     public void listBrokers() {
@@ -157,5 +190,14 @@ public class AuctionHouse {
 
     public void listAuctions() {
         System.out.println(auctions);
+    }
+
+    public boolean checkForEarlyWinner(Map<Integer, Double> bidMap, int auctionId) {
+        if (bidMap.size() == 1) {
+            System.out.println(CLIENT + new ArrayList<>(bidMap.keySet()).get(0) + " wins the auction for product " + auctionId + ".");
+            System.out.println(AUCTION_STRING + auctionId + ENDED);
+            return true;
+        }
+        return false;
     }
 }

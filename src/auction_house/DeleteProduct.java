@@ -18,6 +18,8 @@ public class DeleteProduct implements Runnable {
 
     @Override
     public void run() {
-        broker.deleteProduct(id, productMap);
+        synchronized (productMap) {
+            broker.deleteProduct(id, productMap);
+        }
     }
 }

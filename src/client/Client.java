@@ -1,21 +1,17 @@
 package client;
 
+import licitation_strategies.Strategy;
+import licitation_strategies.StrategyFactory;
+
+import java.util.Random;
+
 public abstract class Client {
     private int id;
     private String name;
     private String address;
     private int numberParticipation;
     private int numberAuctionWins;
-    private double maxPricePaidForAProduct;
     protected static int counterClients = 1;
-
-    public double getMaxPricePaidForAProduct() {
-        return maxPricePaidForAProduct;
-    }
-
-    public void setMaxPricePaidForAProduct(double maxPricePaidForAProduct) {
-        this.maxPricePaidForAProduct = maxPricePaidForAProduct;
-    }
 
     public int getId() {
         return id;
@@ -59,6 +55,15 @@ public abstract class Client {
 
     protected static void updateCounter() {
         counterClients++;
+    }
+
+    public double calculateBid(double lastBid, double maxSum) {
+        StrategyFactory strategyFactory = new StrategyFactory();
+        Strategy strategy = strategyFactory.getStrategy(new Random().nextInt(3));
+        if (strategy.bid(lastBid) <= maxSum) {
+            System.out.println("Client " + id + " applies the " + strategy + " strategy and bids " + strategy.bid(lastBid) + ".");
+        }
+        return strategy.bid(lastBid);
     }
 
     @Override
