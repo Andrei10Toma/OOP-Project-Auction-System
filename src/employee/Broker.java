@@ -10,9 +10,8 @@ import java.util.TreeMap;
 import org.apache.commons.lang3.tuple.Pair;
 
 public class Broker implements Employee {
-    // a map with keys: auctionId and values: the clients that are assigned to this broker that will attend the auction
     private Map<Integer, List<Pair<Client, Double>>> clients = new TreeMap<>();
-    private int accumulatedSum;
+    private double accumulatedSum;
     private final int id;
     private static int counterBroker = 1;
 
@@ -33,7 +32,7 @@ public class Broker implements Employee {
         this.clients = clients;
     }
 
-    public int getAccumulatedSum() {
+    public double getAccumulatedSum() {
         return accumulatedSum;
     }
 
@@ -41,11 +40,11 @@ public class Broker implements Employee {
         this.accumulatedSum = accumulatedSum;
     }
 
-    public void requestClientsSum(int auctionId, double lastBid, Map<Integer, Double> bidMap) {
+    public void requestClientsSum(int auctionId, Map<Integer, Double> bidMap) {
         clients.get(auctionId)
                 .forEach(pairClientsMaxPrice -> {
                     if (bidMap.containsKey(pairClientsMaxPrice.getKey().getId())) {
-                        double bidSum = pairClientsMaxPrice.getKey().calculateBid(lastBid, pairClientsMaxPrice.getValue());
+                        double bidSum = pairClientsMaxPrice.getKey().calculateBid(bidMap.get(pairClientsMaxPrice.getKey().getId()), pairClientsMaxPrice.getValue());
                         if (bidSum <= pairClientsMaxPrice.getValue()) {
                             bidMap.put(pairClientsMaxPrice.getKey().getId(), bidSum);
                         }
@@ -71,6 +70,19 @@ public class Broker implements Employee {
                         }
                     }
                 });
+    }
+
+    public void updateDataAndEndCommunication(Client winner, int auctionId, double winnerBid, Map<Integer, Product> productMap) {
+        CommissionFactory commissionFactory = new CommissionFactory();
+        clients.get(auctionId).forEach(pairClientDouble -> {
+            if (winner != null && winner.getId() == pairClientDouble.getKey().getId()) {
+                winner.setNumberAuctionWins(winner.getNumberAuctionWins() + 1);
+                accumulatedSum += commissionFactory.chooseCommission(winner).calculateCommission(winnerBid);
+                deleteProduct(auctionId, productMap);
+            }
+            pairClientDouble.getKey().setNumberParticipation(pairClientDouble.getKey().getNumberParticipation() + 1);
+        });
+        clients.remove(auctionId);
     }
 
     @Override

@@ -10,6 +10,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import product.Product;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static auction.Auction.AUCTION_STRING;
 import static auction.Auction.ENDED;
@@ -149,23 +150,24 @@ public class AuctionHouse {
         } else {
             addClientToAuction(clientId, productId, maxPricePaidByClient);
         }
-        System.out.println(CLIENT + clientId + " assigned successfully at auction for product " + productId + "." );
+        System.out.println(CLIENT + clientId + " assigned successfully at auction for product " + productId + ".");
         if (auctions.get(productId).canStart()) {
             auctions.get(productId).startAuction(brokers, products.get(productId).getMinPrice());
         }
     }
 
-    public double calculateMaxBid(Map<Integer, Double> bidMap, int auctionId) {
+    public void calculateMaxBid(Map<Integer, Double> bidMap, int auctionId) {
         double maxBid = Collections.max(bidMap.values());
         brokers.stream().filter(broker -> broker.getClients().get(auctionId) != null)
                 .forEach(broker -> broker.informClientsAboutMaxSum(auctionId, maxBid, bidMap));
-        return maxBid;
     }
 
-    public void declareTheWinnerOfTheAuction(Map<Integer, Double> bidMap,
-                                             List<Broker> brokersWithClientInAuction, int auctionId) {
+    public void declareTheWinnerOfTheAuction(Map<Integer, Double> bidMap, int auctionId, double minPriceOfTheProduct) {
         double winnerBid = Double.MIN_VALUE;
-        for (Broker broker : brokersWithClientInAuction) {
+        List<Broker> brokersWithClientsInAuction = brokers.stream()
+                .filter(broker -> broker.getClients().get(auctionId) != null)
+                .collect(Collectors.toList());
+        for (Broker broker : brokersWithClientsInAuction) {
             for (Pair<Client, Double> pair : broker.getClients().get(auctionId)) {
                 if (bidMap.containsKey(pair.getKey().getId())) {
                     if (bidMap.get(pair.getKey().getId()) > winnerBid) {
@@ -179,9 +181,29 @@ public class AuctionHouse {
             }
         }
         System.out.println();
-        System.out.println(CLIENT + auctions.get(auctionId).getWinnerClient().getId() +
-                " wins the auction for product " + auctionId + ".");
+        if (winnerBid >= minPriceOfTheProduct) {
+            System.out.println(CLIENT + auctions.get(auctionId).getWinnerClient().getId() +
+                    " wins the auction for product " + auctionId + ".");
+        } else {
+            auctions.get(auctionId).setWinnerClient(null);
+            System.out.println("The product will not be sold because the max bid was " + winnerBid + " and the minimum" +
+                    " price of the product was " + minPriceOfTheProduct + ".");
+        }
+        double finalWinnerBid = winnerBid;
+        brokersWithClientsInAuction
+                .forEach(broker -> broker.updateDataAndEndCommunication(auctions.get(auctionId).getWinnerClient(), auctionId, finalWinnerBid, products));
+        auctions.remove(auctionId);
         System.out.println(AUCTION_STRING + auctionId + ENDED);
+    }
+
+    public boolean checkForEarlyWinner(Map<Integer, Double> bidMap, int auctionId, double minPrice) {
+        double bid = new ArrayList<>(bidMap.keySet()).get(0);
+        if (bidMap.size() == 1 && bid >= minPrice) {
+            System.out.println(CLIENT + bid + " wins the auction for product " + auctionId + ".");
+            System.out.println(AUCTION_STRING + auctionId + ENDED);
+            return true;
+        }
+        return false;
     }
 
     public void listBrokers() {
@@ -190,14 +212,5 @@ public class AuctionHouse {
 
     public void listAuctions() {
         System.out.println(auctions);
-    }
-
-    public boolean checkForEarlyWinner(Map<Integer, Double> bidMap, int auctionId) {
-        if (bidMap.size() == 1) {
-            System.out.println(CLIENT + new ArrayList<>(bidMap.keySet()).get(0) + " wins the auction for product " + auctionId + ".");
-            System.out.println(AUCTION_STRING + auctionId + ENDED);
-            return true;
-        }
-        return false;
     }
 }

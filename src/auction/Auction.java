@@ -58,7 +58,6 @@ public class Auction {
     }
 
     public void startAuction(List<Broker> brokers, double minPriceOfTheProduct) {
-        double lastMaxBid = minPriceOfTheProduct;
         Map<Integer, Double> bidMap = new HashMap<>();
         int maxSteps = new Random().nextInt(6) + 5;
         System.out.println(AUCTION_STRING + id + " started=========");
@@ -67,20 +66,19 @@ public class Auction {
                 .collect(Collectors.toList());
         brokersWithClientInAuction
                 .forEach(broker -> broker.getClients().get(id)
-                        .forEach(pair -> bidMap.put(pair.getKey().getId(), minPriceOfTheProduct)));
+                        .forEach(pair -> bidMap.put(pair.getKey().getId(), new Random().nextDouble() * 100)));
         for (int step = 0; step < maxSteps; step++) {
             System.out.println();
-            double finalLastMaxBid = lastMaxBid;
             brokersWithClientInAuction
-                    .forEach(broker -> broker.requestClientsSum(id, finalLastMaxBid, bidMap));
+                    .forEach(broker -> broker.requestClientsSum(id, bidMap));
             if (step != maxSteps - 1) {
-                lastMaxBid = AuctionHouse.getInstance().calculateMaxBid(bidMap, id);
-                if (AuctionHouse.getInstance().checkForEarlyWinner(bidMap, id)) {
+                AuctionHouse.getInstance().calculateMaxBid(bidMap, id);
+                if (AuctionHouse.getInstance().checkForEarlyWinner(bidMap, id, minPriceOfTheProduct)) {
                     return;
                 }
             }
         }
-        AuctionHouse.getInstance().declareTheWinnerOfTheAuction(bidMap, brokersWithClientInAuction, id);
+        AuctionHouse.getInstance().declareTheWinnerOfTheAuction(bidMap, id, minPriceOfTheProduct);
     }
 
     @Override
