@@ -17,7 +17,7 @@ import static auction.Auction.ENDED;
 
 public class AuctionHouse {
     public static final String CLIENT = "Client ";
-    private Map<Integer, Product> products = Collections.synchronizedMap(new TreeMap<>());
+    private Map<Integer, Product> products = new TreeMap<>();
     private Map<Integer, Client> clients = new TreeMap<>();
     private Map<Integer, Auction> auctions = new TreeMap<>();
     private List<Broker> brokers = new ArrayList<>();
@@ -28,8 +28,8 @@ public class AuctionHouse {
     public static AuctionHouse getInstance() {
         Scanner scanner = new Scanner(System.in);
         if (instance == null) {
-            System.out.print("Enter the name of the JSON where the data is located: ");
             instance = new AuctionHouse();
+            System.out.print("Enter the name of the JSON file to read the data about clients and products: ");
             instance.adapter = new JSONAdapter(scanner.next());
         }
         return instance;
@@ -91,7 +91,7 @@ public class AuctionHouse {
             Broker brokerAdd = new Broker();
             brokers.add(brokerAdd);
         }
-        System.out.println("Generated " + numberOfBrokers + " brokers.");
+        System.out.println("Generated " + brokers.size() + " brokers.");
     }
 
     private void addAuctionForProduct(int clientId, int productId, double maxPricePaidByClient) throws BrokerNotFound, MaxPriceLessThanMinimumPrice {
@@ -186,8 +186,8 @@ public class AuctionHouse {
                     " wins the auction for product " + auctionId + ".");
         } else {
             auctions.get(auctionId).setWinnerClient(null);
-            System.out.println("The product will not be sold because the max bid was " + winnerBid + " and the minimum" +
-                    " price of the product was " + minPriceOfTheProduct + ".");
+            System.out.println("The product will not be sold because the minimum price is " + minPriceOfTheProduct +
+                    " and the maximum bid is " + winnerBid + ".");
         }
         double finalWinnerBid = winnerBid;
         brokersWithClientsInAuction
@@ -197,9 +197,9 @@ public class AuctionHouse {
     }
 
     public boolean checkForEarlyWinner(Map<Integer, Double> bidMap, int auctionId, double minPrice) {
-        double bid = new ArrayList<>(bidMap.keySet()).get(0);
-        if (bidMap.size() == 1 && bid >= minPrice) {
-            System.out.println(CLIENT + bid + " wins the auction for product " + auctionId + ".");
+        int clientId = new ArrayList<>(bidMap.keySet()).get(0);
+        if (bidMap.size() == 1 && bidMap.get(clientId) >= minPrice) {
+            System.out.println(CLIENT + clientId + " wins the auction for product " + auctionId + ".");
             System.out.println(AUCTION_STRING + auctionId + ENDED);
             return true;
         }

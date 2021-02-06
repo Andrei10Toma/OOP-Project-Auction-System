@@ -1,8 +1,9 @@
 package employee;
 
 import auction_house.IAdapter;
-import exceptions.DuplicateProductException;
 import product.Product;
+import product.ProductFactory;
+import product.ProductType;
 
 import java.util.Map;
 
@@ -21,21 +22,15 @@ public class Administrator implements Employee {
     }
 
     @Override
-    public void addProduct(Product productAdd, Map<Integer, Product> productMap) {
-        if (productMap.containsKey(productAdd.getId())) {
-            try {
-                throw new DuplicateProductException("Product with " + productAdd.getId() + " already exists.");
-            } catch (DuplicateProductException e) {
-                e.printStackTrace();
-            }
-        }
-        else {
-            productMap.put(productAdd.getId(), productAdd);
-        }
+    public synchronized void addProduct(Map<Integer, Product> productMap, ProductType type, String name, double minPrice,
+                                        int year, String elem1, String elem2) {
+        ProductFactory productFactory = new ProductFactory();
+        Product productAdd = productFactory.getProduct(type, name, minPrice, year, elem1, elem2);
+        productMap.put(productAdd.getId(), productAdd);
     }
 
     @Override
     public void deleteProduct(int productId, Map<Integer, Product> productMap) {
-        System.out.println("Administrator can't delete products");
+        System.out.println("Administrator can't delete products.");
     }
 }

@@ -1,5 +1,6 @@
 package employee;
 
+import auction_house.DeleteProduct;
 import client.Client;
 import exceptions.ProductNotFound;
 import product.Product;
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import org.apache.commons.lang3.tuple.Pair;
+import product.ProductType;
 
 public class Broker implements Employee {
     private Map<Integer, List<Pair<Client, Double>>> clients = new TreeMap<>();
@@ -38,6 +40,12 @@ public class Broker implements Employee {
 
     public void setAccumulatedSum(int accumulatedSum) {
         this.accumulatedSum = accumulatedSum;
+    }
+
+    public void requestClientsInitialSum(int auctionId, Map<Integer, Double> bidMap) {
+        clients.get(auctionId)
+                .forEach(pairClientMaxPrice ->
+                        bidMap.put(pairClientMaxPrice.getKey().getId(), pairClientMaxPrice.getKey().chooseInitialBid()));
     }
 
     public void requestClientsSum(int auctionId, Map<Integer, Double> bidMap) {
@@ -76,9 +84,10 @@ public class Broker implements Employee {
         CommissionFactory commissionFactory = new CommissionFactory();
         clients.get(auctionId).forEach(pairClientDouble -> {
             if (winner != null && winner.getId() == pairClientDouble.getKey().getId()) {
+                System.out.println("Broker " + id + " accumulates commission from client " + winner.getId());
                 winner.setNumberAuctionWins(winner.getNumberAuctionWins() + 1);
                 accumulatedSum += commissionFactory.chooseCommission(winner).calculateCommission(winnerBid);
-                deleteProduct(auctionId, productMap);
+                new Thread(new DeleteProduct(this, productMap, auctionId)).start();
             }
             pairClientDouble.getKey().setNumberParticipation(pairClientDouble.getKey().getNumberParticipation() + 1);
         });
@@ -86,8 +95,8 @@ public class Broker implements Employee {
     }
 
     @Override
-    public void addProduct(Product product, Map<Integer, Product> productMap) {
-        System.err.println("Brokers can't add products to the auction house");
+    public void addProduct(Map<Integer, Product> productMap, ProductType type, String name, double minPrice, int year, String elem1, String elem2) {
+        System.out.println("Brokers can't add products.");
     }
 
     @Override

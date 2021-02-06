@@ -4,6 +4,7 @@ import licitation_strategies.Strategy;
 import licitation_strategies.StrategyFactory;
 
 import java.util.Random;
+import java.util.logging.Logger;
 
 public abstract class Client {
     private int id;
@@ -12,6 +13,7 @@ public abstract class Client {
     private int numberParticipation;
     private int numberAuctionWins;
     protected static int counterClients = 1;
+    public static final Logger clientLogger = Logger.getLogger("Client");
 
     public int getId() {
         return id;
@@ -55,6 +57,10 @@ public abstract class Client {
 
     protected static void updateCounter() {
         counterClients++;
+    }
+
+    public double chooseInitialBid() {
+        return new Random().nextDouble() * 100;
     }
 
     public double calculateBid(double lastBid, double maxSum) {

@@ -65,8 +65,7 @@ public class Auction {
                 .filter(broker -> broker.getClients().get(id) != null)
                 .collect(Collectors.toList());
         brokersWithClientInAuction
-                .forEach(broker -> broker.getClients().get(id)
-                        .forEach(pair -> bidMap.put(pair.getKey().getId(), new Random().nextDouble() * 100)));
+                .forEach(broker -> broker.requestClientsInitialSum(id, bidMap));
         for (int step = 0; step < maxSteps; step++) {
             System.out.println();
             brokersWithClientInAuction

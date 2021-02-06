@@ -3,6 +3,7 @@ package main;
 import auction_house.*;
 import command.Tasks;
 import exceptions.*;
+import product.ProductType;
 
 import java.util.Scanner;
 
@@ -38,6 +39,14 @@ public class Main {
             case BID -> auctionHouse.checkAuction(Integer.parseInt(commandComponents[1]),
                     Integer.parseInt(commandComponents[2]), Double.parseDouble(commandComponents[3]));
             case LIST_AUCTIONS -> auctionHouse.listAuctions();
+            // add_product {name} {minPrice} {type} {year} {charEl1} {charEl2}
+            case ADD_PRODUCT -> new Thread(new AddProduct(auctionHouse.getProducts(),
+                    commandComponents[1],
+                    Double.parseDouble(commandComponents[2]),
+                    ProductType.valueOf(commandComponents[3]),
+                    Integer.parseInt(commandComponents[4]),
+                    commandComponents[5],
+                    commandComponents[6])).start();
             default -> throw new IllegalArgumentException("Command " + task + " not found.");
         }
     }
