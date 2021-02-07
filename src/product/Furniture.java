@@ -4,6 +4,12 @@ public class Furniture extends Product {
     private String type;
     private String material;
 
+    public Furniture(String name, double minPrice, int year, String type, String material) {
+        super(name, minPrice, year);
+        this.type = type;
+        this.material = material;
+    }
+
     public String getType() {
         return type;
     }

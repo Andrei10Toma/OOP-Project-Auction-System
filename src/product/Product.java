@@ -8,6 +8,14 @@ public abstract class Product {
     private int year;
     protected static int counterProducts = 1;
 
+    protected Product(String name, double minPrice, int year) {
+        this.id = counterProducts++;
+        this.name = name;
+        this.sellPrice = 0;
+        this.minPrice = minPrice;
+        this.year = year;
+    }
+
     public int getYear() {
         return year;
     }
@@ -46,10 +54,6 @@ public abstract class Product {
 
     public void setMinPrice(double minPrice) {
         this.minPrice = minPrice;
-    }
-
-    protected static void updateCounter() {
-        counterProducts++;
     }
 
     @Override

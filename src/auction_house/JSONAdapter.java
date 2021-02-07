@@ -14,13 +14,14 @@ import java.io.IOException;
 import java.util.Map;
 
 public class JSONAdapter implements IAdapter {
-    private final String filename;
+    private String filename;
     private static final String PRODUCT_TYPE = "productType";
     private static final String MIN_PRICE = "minPrice";
 
-    public JSONAdapter(String filename) {
+    public void setFilename(String filename) {
         this.filename = filename;
     }
+
 
     private Client createLegalPersonClient(JsonObject clientData) {
         return new LegalPersonBuilder()
@@ -37,7 +38,7 @@ public class JSONAdapter implements IAdapter {
         return new IndividualBuilder()
                 .withAddress(clientData.get("address").getAsString())
                 .withName(clientData.get("name").getAsString())
-                .withBirthDate(clientData.get("birthdate").getAsString())
+                .withBirthdate(clientData.get("birthdate").getAsString())
                 .withNumberAuctionWins(0)
                 .withNumberParticipation(0)
                 .build();

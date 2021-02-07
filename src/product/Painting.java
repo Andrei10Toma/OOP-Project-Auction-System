@@ -4,6 +4,12 @@ public class Painting extends Product{
     private String painterName;
     private Colors colors;
 
+    public Painting(String name, double minPrice, int year, String painterName, Colors colors) {
+        super(name, minPrice, year);
+        this.painterName = painterName;
+        this.colors = colors;
+    }
+
     public String getPainterName() {
         return painterName;
     }

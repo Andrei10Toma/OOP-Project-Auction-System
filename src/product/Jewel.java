@@ -4,6 +4,12 @@ public class Jewel extends Product {
     private String material;
     private boolean gem;
 
+    public Jewel(String name, double minPrice, int year, String material, boolean gem) {
+        super(name, minPrice, year);
+        this.material = material;
+        this.gem = gem;
+    }
+
     public String getMaterial() {
         return material;
     }

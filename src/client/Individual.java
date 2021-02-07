@@ -3,6 +3,11 @@ package client;
 public class Individual extends Client {
     private String birthDate;
 
+    public Individual(String name, String address, String birthDate) {
+        super(name, address);
+        this.birthDate = birthDate;
+    }
+
     public String getBirthDate() {
         return birthDate;
     }

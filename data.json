@@ -160,6 +160,46 @@
       "year": 1940,
       "painterName": "Pablo Picasso",
       "colors": "TEMPERA"
+    },
+    {
+      "productType": "PAINTING",
+      "name": "Starry Night",
+      "minPrice": 300,
+      "year": 1882,
+      "painterName": "Van Gogh",
+      "colors": "OIL"
+    },
+    {
+      "productType": "JEWEL",
+      "name": "BB Necklace",
+      "minPrice": 500,
+      "year": 2020,
+      "material": "Silver",
+      "gem": "true"
+    },
+    {
+      "productType": "FURNITURE",
+      "name": "Active T",
+      "minPrice": 650,
+      "year": 2017,
+      "type": "Entertainment",
+      "material": "Steel and Wood"
+    },
+    {
+      "productType": "FURNITURE",
+      "name": "Active T",
+      "minPrice": 650,
+      "year": 2017,
+      "type": "Entertainment",
+      "material": "Steel and Wood"
+    },
+    {
+      "productType": "JEWEL",
+      "name": "Rolex Watch",
+      "minPrice": 2000,
+      "year": 2020,
+      "material": "Swarovski",
+      "gem": "true"
     }
   ]
 }

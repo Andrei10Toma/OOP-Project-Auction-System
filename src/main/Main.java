@@ -34,8 +34,8 @@ public class Main {
             case LIST_BROKERS -> auctionHouse.listBrokers();
             case LIST_CLIENTS -> auctionHouse.listClients();
             case LIST_PRODUCTS -> new Thread(new ListProducts(auctionHouse)).start();
-            case LOAD_CLIENTS -> auctionHouse.registerClients();
-            case LOAD_PRODUCTS -> auctionHouse.registerProducts();
+            case LOAD_CLIENTS -> auctionHouse.registerClients(commandComponents[1]);
+            case LOAD_PRODUCTS -> auctionHouse.registerProducts(commandComponents[1]);
             case BID -> auctionHouse.checkAuction(Integer.parseInt(commandComponents[1]),
                     Integer.parseInt(commandComponents[2]), Double.parseDouble(commandComponents[3]));
             case LIST_AUCTIONS -> auctionHouse.listAuctions();

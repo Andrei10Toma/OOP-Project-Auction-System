@@ -1,46 +1,21 @@
 package product;
 
-public class FurnitureBuilder implements ProductBuilder<Furniture, FurnitureBuilder>{
-    Furniture furniture = new Furniture();
-
-    @Override
-    public FurnitureBuilder withId(int id) {
-        furniture.setId(id);
-        return this;
-    }
-
-    @Override
-    public FurnitureBuilder withName(String name) {
-        furniture.setName(name);
-        return this;
-    }
-
-    @Override
-    public FurnitureBuilder withMinPrice(double minPrice) {
-        furniture.setMinPrice(minPrice);
-        return this;
-    }
-
-    @Override
-    public FurnitureBuilder withYear(int year) {
-        furniture.setYear(year);
-        return this;
-    }
-
-    @Override
-    public Furniture build() {
-        furniture.setId(Product.counterProducts);
-        Product.updateCounter();
-        return furniture;
-    }
+public class FurnitureBuilder extends AbstractProductBuilder<Furniture, FurnitureBuilder>{
+    private String type;
+    private String material;
 
     public FurnitureBuilder withType(String type) {
-         furniture.setType(type);
-         return this;
+        this.type = type;
+        return this;
     }
 
     public FurnitureBuilder withMaterial(String material) {
-        furniture.setMaterial(material);
+        this.material = material;
         return this;
+    }
+
+    @Override
+    protected Furniture internalBuild() {
+        return new Furniture(this.name, this.minPrice, this.year, this.type, this.material);
     }
 }

@@ -4,6 +4,12 @@ public class LegalPerson extends Client {
     private double socialCapital;
     private Company companyType;
 
+    public LegalPerson(String name, String address, double socialCapital, Company companyType) {
+        super(name, address);
+        this.socialCapital = socialCapital;
+        this.companyType = companyType;
+    }
+
     public double getSocialCapital() {
         return socialCapital;
     }

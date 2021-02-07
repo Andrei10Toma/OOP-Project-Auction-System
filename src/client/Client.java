@@ -4,7 +4,6 @@ import licitation_strategies.Strategy;
 import licitation_strategies.StrategyFactory;
 
 import java.util.Random;
-import java.util.logging.Logger;
 
 public abstract class Client {
     private int id;
@@ -13,7 +12,14 @@ public abstract class Client {
     private int numberParticipation;
     private int numberAuctionWins;
     protected static int counterClients = 1;
-    public static final Logger clientLogger = Logger.getLogger("Client");
+
+    protected Client(String name, String address) {
+        this.id = counterClients++;
+        this.name = name;
+        this.address = address;
+        this.numberParticipation = 0;
+        this.numberAuctionWins = 0;
+    }
 
     public int getId() {
         return id;
@@ -53,10 +59,6 @@ public abstract class Client {
 
     public void setNumberAuctionWins(int numberAuctionWins) {
         this.numberAuctionWins = numberAuctionWins;
-    }
-
-    protected static void updateCounter() {
-        counterClients++;
     }
 
     public double chooseInitialBid() {

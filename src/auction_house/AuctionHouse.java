@@ -23,14 +23,11 @@ public class AuctionHouse {
     private List<Broker> brokers = new ArrayList<>();
     private final Administrator administrator = Administrator.getInstance();
     private static AuctionHouse instance;
-    private IAdapter adapter;
+    private final IAdapter adapter = new JSONAdapter();
 
     public static AuctionHouse getInstance() {
-        Scanner scanner = new Scanner(System.in);
         if (instance == null) {
             instance = new AuctionHouse();
-            System.out.print("Enter the name of the JSON file to read the data about clients and products: ");
-            instance.adapter = new JSONAdapter(scanner.next());
         }
         return instance;
     }
@@ -67,11 +64,13 @@ public class AuctionHouse {
         return brokers;
     }
 
-    public void registerClients() {
+    public void registerClients(String filename) {
+        adapter.setFilename(filename);
         adapter.readClient(clients);
     }
 
-    public void registerProducts() {
+    public void registerProducts(String filename) {
+        adapter.setFilename(filename);
         administrator.readProducts(adapter, products);
     }
 

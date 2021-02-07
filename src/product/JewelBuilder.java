@@ -1,46 +1,21 @@
 package product;
 
-public class JewelBuilder implements ProductBuilder<Jewel, JewelBuilder> {
-    Jewel jewel = new Jewel();
-
-    @Override
-    public JewelBuilder withId(int id) {
-        jewel.setId(id);
-        return this;
-    }
-
-    @Override
-    public JewelBuilder withName(String name) {
-        jewel.setName(name);
-        return this;
-    }
-
-    @Override
-    public JewelBuilder withMinPrice(double minPrice) {
-        jewel.setMinPrice(minPrice);
-        return this;
-    }
-
-    @Override
-    public JewelBuilder withYear(int year) {
-        jewel.setYear(year);
-        return this;
-    }
-
-    @Override
-    public Jewel build() {
-        jewel.setId(Product.counterProducts);
-        Product.updateCounter();
-        return jewel;
-    }
+public class JewelBuilder extends AbstractProductBuilder<Jewel, JewelBuilder> {
+    private String material;
+    private boolean gem;
 
     public JewelBuilder withMaterial(String material) {
-        jewel.setMaterial(material);
+        this.material = material;
         return this;
     }
 
     public JewelBuilder withGem(boolean gem) {
-        jewel.setGem(gem);
+        this.gem = gem;
         return this;
+    }
+
+    @Override
+    protected Jewel internalBuild() {
+        return new Jewel(this.name, this.minPrice, this.year, this.material, this.gem);
     }
 }
