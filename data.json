@@ -160,6 +160,46 @@
       "year": 1940,
       "painterName": "Pablo Picasso",
       "colors": "TEMPERA"
+    },
+    {
+      "productType": "JEWEL",
+      "name": "BB NeckLace",
+      "minPrice": 300,
+      "year": 2019,
+      "material": "Silver",
+      "gem": "true"
+    },
+    {
+      "productType": "PAINTING",
+      "name": "Carul cu Boi",
+      "minPrice": 1000,
+      "year": 2010,
+      "painterName": "Marius Ilie",
+      "colors": "OIL"
+    },
+    {
+      "productType": "FURNITURE",
+      "name": "Table Tenis table Head",
+      "minPrice": 650,
+      "year": 2018,
+      "type": "Entertainment",
+      "material": "Steel and Wood"
+    },
+    {
+      "productType": "PAINTING",
+      "name": "Starry Night",
+      "minPrice": 900,
+      "year": 1882,
+      "painterName": "Van Gogh",
+      "colors": "TEMPERA"
+    },
+    {
+      "productType": "JEWEL",
+      "name": "Rolex Watch",
+      "minPrice": 1500,
+      "year": 2017,
+      "material": "Swarovski",
+      "gem": "true"
     }
   ]
 }

@@ -29,7 +29,7 @@ public class AuctionHouse {
         Scanner scanner = new Scanner(System.in);
         if (instance == null) {
             instance = new AuctionHouse();
-            System.out.print("Enter the name of the JSON file to read the data about clients and products: ");
+            System.out.print("Enter the name of the JSON file to read the data.json about clients and products: ");
             instance.adapter = new JSONAdapter(scanner.next());
         }
         return instance;
