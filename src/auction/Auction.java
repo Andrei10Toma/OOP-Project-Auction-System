@@ -57,7 +57,7 @@ public class Auction {
         return (numberParticipants == actualNumberOfParticipants);
     }
 
-    public void startAuction(List<Broker> brokers, double minPriceOfTheProduct) {
+    public void startAuction(List<Broker> brokers, double minPriceOfTheProduct) throws InterruptedException {
         Map<Integer, Double> bidMap = new HashMap<>();
         int maxSteps = new Random().nextInt(6) + 5;
         System.out.println(AUCTION_STRING + id + " started=========");

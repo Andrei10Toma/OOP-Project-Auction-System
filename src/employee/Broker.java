@@ -84,7 +84,7 @@ public class Broker implements Employee {
     }
 
     public void updateDataAndEndCommunication(Client winner, int auctionId, double winnerBid,
-                                              Map<Integer, Product> productMap, Map<Integer, Product> soldProducts) {
+                                              Map<Integer, Product> productMap) {
         synchronized (AuctionHouse.getInstance().getProducts()) {
             CommissionFactory commissionFactory = new CommissionFactory();
             clients.get(auctionId).forEach(pairClientDouble -> {
@@ -92,7 +92,7 @@ public class Broker implements Employee {
                     System.out.println("Broker " + id + " accumulates commission from client " + winner.getId());
                     winner.setNumberAuctionWins(winner.getNumberAuctionWins() + 1);
                     accumulatedSum += commissionFactory.chooseCommission(winner).calculateCommission(winnerBid);
-                    new Thread(new DeleteProduct(this, productMap, soldProducts, auctionId, winnerBid)).start();
+                    new Thread(new DeleteProduct(this, productMap, auctionId, winnerBid)).start();
                 }
                 pairClientDouble.getKey().setNumberParticipation(pairClientDouble.getKey().getNumberParticipation() + 1);
             });
@@ -106,11 +106,10 @@ public class Broker implements Employee {
     }
 
     @Override
-    public void deleteProduct(int productId, Map<Integer, Product> productMap, Map<Integer, Product> soldProducts, double winnerBid) {
+    public void deleteProduct(int productId, Map<Integer, Product> productMap, double winnerBid) {
         synchronized (AuctionHouse.getInstance().getProducts()) {
             try {
                 if (productMap.containsKey(productId)) {
-                    soldProducts.put(productId, productMap.get(productId));
                     productMap.get(productId).setSellPrice(winnerBid);
                     productMap.remove(productId);
                 } else {

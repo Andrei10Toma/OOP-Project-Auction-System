@@ -117,7 +117,7 @@ public class AuctionHouseTest {
     @DisplayName("Test no one wins the auction.")
     @Order(5)
     public void testNoOneWinsTheAuction()
-            throws ClientAlreadyEnrolledForAuction, ProductNotFound, NotEnoughBrokers, ClientNotFound, MaxPriceLessThanMinimumPrice, BrokerNotFound {
+            throws ClientAlreadyEnrolledForAuction, ProductNotFound, NotEnoughBrokers, ClientNotFound, MaxPriceLessThanMinimumPrice, BrokerNotFound, InterruptedException {
 
         auctionHouse.getAuctions().put(1, new Auction(4, 1));
         auctionHouse.checkAuction(1, 1, 3100);
@@ -131,7 +131,7 @@ public class AuctionHouseTest {
     @DisplayName("Test no one wins the auction V2.")
     @Order(6)
     public void testNoOneWinsTheAuction2()
-            throws ClientAlreadyEnrolledForAuction, ProductNotFound, NotEnoughBrokers, ClientNotFound, MaxPriceLessThanMinimumPrice, BrokerNotFound {
+            throws ClientAlreadyEnrolledForAuction, ProductNotFound, NotEnoughBrokers, ClientNotFound, MaxPriceLessThanMinimumPrice, BrokerNotFound, InterruptedException {
         auctionHouse.getAuctions().put(4, new Auction(4, 4));
         auctionHouse.checkAuction(1, 4, 2199);
         auctionHouse.checkAuction(2, 4, 2200);
@@ -139,14 +139,13 @@ public class AuctionHouseTest {
         assertTrue(auctionHouse.getProducts().containsKey(4));
         assertFalse(auctionHouse.getAuctions().containsKey(4));
         auctionHouse.getBrokers().forEach(broker -> assertTrue(broker.getClients().keySet().stream().noneMatch(key -> key != 4)));
-        assertFalse(auctionHouse.getSoldProducts().containsKey(4));
     }
 
     @Test
     @DisplayName("Test Exception ClientAlreadyEnrolledForAuction And MaxPriceLessThanMinimumPrice")
     @Order(7)
     public void testClientAlreadyEnrolledForAuctionException()
-            throws ClientAlreadyEnrolledForAuction, ProductNotFound, NotEnoughBrokers, ClientNotFound, MaxPriceLessThanMinimumPrice, BrokerNotFound {
+            throws ClientAlreadyEnrolledForAuction, ProductNotFound, NotEnoughBrokers, ClientNotFound, MaxPriceLessThanMinimumPrice, BrokerNotFound, InterruptedException {
         auctionHouse.getAuctions().put(1, new Auction(4, 1));
         auctionHouse.checkAuction(1, 1, 3100);
         Exception exception = assertThrows(ClientAlreadyEnrolledForAuction.class, () -> auctionHouse.checkAuction(1, 1, 3000));
@@ -159,7 +158,7 @@ public class AuctionHouseTest {
     @DisplayName("Test one Client will win the auction")
     @Order(8)
     public void testClientWinsTheAuction()
-            throws ClientAlreadyEnrolledForAuction, ProductNotFound, NotEnoughBrokers, ClientNotFound, MaxPriceLessThanMinimumPrice, BrokerNotFound {
+            throws ClientAlreadyEnrolledForAuction, ProductNotFound, NotEnoughBrokers, ClientNotFound, MaxPriceLessThanMinimumPrice, BrokerNotFound, InterruptedException {
         auctionHouse.getAuctions().put(2, new Auction(4, 2));
         auctionHouse.checkAuction(1, 2, 2000);
         auctionHouse.checkAuction(2, 2, 800);
@@ -178,7 +177,7 @@ public class AuctionHouseTest {
     @DisplayName("Test Client can participate to more than one auction")
     @Order(9)
     public void testClientCanParticipateToMoreThanOneAuction()
-            throws ClientAlreadyEnrolledForAuction, ProductNotFound, NotEnoughBrokers, ClientNotFound, MaxPriceLessThanMinimumPrice, BrokerNotFound {
+            throws ClientAlreadyEnrolledForAuction, ProductNotFound, NotEnoughBrokers, ClientNotFound, MaxPriceLessThanMinimumPrice, BrokerNotFound, InterruptedException {
         auctionHouse.getAuctions().put(3, new Auction(4, 3));
         auctionHouse.getAuctions().put(4, new Auction(4, 4));
         auctionHouse.checkAuction(1, 4, 9999);
@@ -205,7 +204,7 @@ public class AuctionHouseTest {
     @DisplayName("Test Client wins earlier")
     @Order(10)
     public void testClientWinsEarlier()
-            throws ClientAlreadyEnrolledForAuction, ProductNotFound, NotEnoughBrokers, ClientNotFound, MaxPriceLessThanMinimumPrice, BrokerNotFound {
+            throws ClientAlreadyEnrolledForAuction, ProductNotFound, NotEnoughBrokers, ClientNotFound, MaxPriceLessThanMinimumPrice, BrokerNotFound, InterruptedException {
         auctionHouse.getAuctions().put(5, new Auction(4, 5));
         auctionHouse.checkAuction(1, 5, 1300);
         auctionHouse.checkAuction(2, 5, 301);

@@ -30,7 +30,7 @@ public class Administrator implements Employee {
     }
 
     @Override
-    public void deleteProduct(int productId, Map<Integer, Product> productMap, Map<Integer, Product> soldProduct, double winnerBid) {
+    public void deleteProduct(int productId, Map<Integer, Product> productMap, double winnerBid) {
         System.out.println("Administrator can't delete products.");
     }
 }

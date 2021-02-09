@@ -1,5 +1,6 @@
 package auction_house;
 
+
 public class ListProducts implements Runnable {
     private final AuctionHouse auctionHouse;
 
