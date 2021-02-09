@@ -3,6 +3,7 @@ package client;
 import licitation_strategies.Strategy;
 import licitation_strategies.StrategyFactory;
 
+import java.util.Objects;
 import java.util.Random;
 
 public abstract class Client {
@@ -72,6 +73,19 @@ public abstract class Client {
             System.out.println("Client " + id + " applies the " + strategy + " strategy and bids " + strategy.bid(lastBid) + ".");
         }
         return strategy.bid(lastBid);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Client)) return false;
+        Client client = (Client) o;
+        return numberParticipation == client.numberParticipation && numberAuctionWins == client.numberAuctionWins && name.equals(client.name) && address.equals(client.address);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, address, numberParticipation, numberAuctionWins);
     }
 
     @Override

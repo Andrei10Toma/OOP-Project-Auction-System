@@ -22,15 +22,15 @@ public class Administrator implements Employee {
     }
 
     @Override
-    public synchronized void addProduct(Map<Integer, Product> productMap, ProductType type, String name, double minPrice,
-                                        int year, String elem1, String elem2) {
+    public void addProduct(Map<Integer, Product> productMap, ProductType type, String name, double minPrice,
+                           int year, String elem1, String elem2) {
         ProductFactory productFactory = new ProductFactory();
         Product productAdd = productFactory.getProduct(type, name, minPrice, year, elem1, elem2);
         productMap.put(productAdd.getId(), productAdd);
     }
 
     @Override
-    public void deleteProduct(int productId, Map<Integer, Product> productMap) {
+    public void deleteProduct(int productId, Map<Integer, Product> productMap, Map<Integer, Product> soldProduct, double winnerBid) {
         System.out.println("Administrator can't delete products.");
     }
 }

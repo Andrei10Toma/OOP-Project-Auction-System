@@ -21,14 +21,14 @@ public class Main {
                 }
                 interpretCommand(auctionHouse, commandComponents, task);
             } catch (IllegalArgumentException | ClientNotFound | ProductNotFound | BrokerNotFound
-                    | ClientAlreadyEnroledForAuction | MaxPriceLessThanMinimumPrice | NotEnoughBrokers e) {
+                    | ClientAlreadyEnrolledForAuction | MaxPriceLessThanMinimumPrice | NotEnoughBrokers e) {
                 e.printStackTrace();
             }
         }
     }
 
     private static void interpretCommand(AuctionHouse auctionHouse, String[] commandComponents, Tasks task)
-            throws ProductNotFound, ClientNotFound, BrokerNotFound, ClientAlreadyEnroledForAuction, MaxPriceLessThanMinimumPrice, NotEnoughBrokers {
+            throws ProductNotFound, ClientNotFound, BrokerNotFound, ClientAlreadyEnrolledForAuction, MaxPriceLessThanMinimumPrice, NotEnoughBrokers {
         switch (task) {
             case GENERATE_BROKERS -> auctionHouse.generateBrokers();
             case LIST_BROKERS -> auctionHouse.listBrokers();

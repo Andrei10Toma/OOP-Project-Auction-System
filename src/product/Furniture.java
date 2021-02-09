@@ -1,5 +1,7 @@
 package product;
 
+import java.util.Objects;
+
 public class Furniture extends Product {
     private String type;
     private String material;
@@ -24,6 +26,20 @@ public class Furniture extends Product {
 
     public void setMaterial(String material) {
         this.material = material;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Furniture)) return false;
+        if (!super.equals(o)) return false;
+        Furniture furniture = (Furniture) o;
+        return type.equals(furniture.type) && material.equals(furniture.material);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), type, material);
     }
 
     @Override

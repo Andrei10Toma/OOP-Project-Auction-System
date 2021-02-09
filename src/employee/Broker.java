@@ -1,5 +1,6 @@
 package employee;
 
+import auction_house.AuctionHouse;
 import auction_house.DeleteProduct;
 import client.Client;
 import exceptions.ProductNotFound;
@@ -57,8 +58,10 @@ public class Broker implements Employee {
                             bidMap.put(pairClientsMaxPrice.getKey().getId(), bidSum);
                         }
                         else {
-                            System.out.println("Client " + pairClientsMaxPrice.getKey().getId() + " exits the auction because he can't bid.");
-                            bidMap.remove(pairClientsMaxPrice.getKey().getId());
+                            if (bidMap.size() != 1) {
+                                System.out.println("Client " + pairClientsMaxPrice.getKey().getId() + " exits the auction because he can't bid.");
+                                bidMap.remove(pairClientsMaxPrice.getKey().getId());
+                            }
                         }
                     }
                 });
@@ -80,18 +83,21 @@ public class Broker implements Employee {
                 });
     }
 
-    public void updateDataAndEndCommunication(Client winner, int auctionId, double winnerBid, Map<Integer, Product> productMap) {
-        CommissionFactory commissionFactory = new CommissionFactory();
-        clients.get(auctionId).forEach(pairClientDouble -> {
-            if (winner != null && winner.getId() == pairClientDouble.getKey().getId()) {
-                System.out.println("Broker " + id + " accumulates commission from client " + winner.getId());
-                winner.setNumberAuctionWins(winner.getNumberAuctionWins() + 1);
-                accumulatedSum += commissionFactory.chooseCommission(winner).calculateCommission(winnerBid);
-                new Thread(new DeleteProduct(this, productMap, auctionId)).start();
-            }
-            pairClientDouble.getKey().setNumberParticipation(pairClientDouble.getKey().getNumberParticipation() + 1);
-        });
-        clients.remove(auctionId);
+    public void updateDataAndEndCommunication(Client winner, int auctionId, double winnerBid,
+                                              Map<Integer, Product> productMap, Map<Integer, Product> soldProducts) {
+        synchronized (AuctionHouse.getInstance().getProducts()) {
+            CommissionFactory commissionFactory = new CommissionFactory();
+            clients.get(auctionId).forEach(pairClientDouble -> {
+                if (winner != null && winner.getId() == pairClientDouble.getKey().getId()) {
+                    System.out.println("Broker " + id + " accumulates commission from client " + winner.getId());
+                    winner.setNumberAuctionWins(winner.getNumberAuctionWins() + 1);
+                    accumulatedSum += commissionFactory.chooseCommission(winner).calculateCommission(winnerBid);
+                    new Thread(new DeleteProduct(this, productMap, soldProducts, auctionId, winnerBid)).start();
+                }
+                pairClientDouble.getKey().setNumberParticipation(pairClientDouble.getKey().getNumberParticipation() + 1);
+            });
+            clients.remove(auctionId);
+        }
     }
 
     @Override
@@ -100,15 +106,19 @@ public class Broker implements Employee {
     }
 
     @Override
-    public void deleteProduct(int productId, Map<Integer, Product> productMap) {
-        try {
-            if (productMap.containsKey(productId)) {
-                productMap.remove(productId);
-            } else {
-                throw new ProductNotFound("Product with " + productId + " was not found.");
+    public void deleteProduct(int productId, Map<Integer, Product> productMap, Map<Integer, Product> soldProducts, double winnerBid) {
+        synchronized (AuctionHouse.getInstance().getProducts()) {
+            try {
+                if (productMap.containsKey(productId)) {
+                    soldProducts.put(productId, productMap.get(productId));
+                    productMap.get(productId).setSellPrice(winnerBid);
+                    productMap.remove(productId);
+                } else {
+                    throw new ProductNotFound("Product with " + productId + " was not found.");
+                }
+            } catch (ProductNotFound e) {
+                e.printStackTrace();
             }
-        } catch (ProductNotFound e) {
-            e.printStackTrace();
         }
     }
 

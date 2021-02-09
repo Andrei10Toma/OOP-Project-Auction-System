@@ -1,5 +1,7 @@
 package client;
 
+import java.util.Objects;
+
 public class Individual extends Client {
     private String birthDate;
 
@@ -20,5 +22,19 @@ public class Individual extends Client {
     public String toString() {
         return "Individual" + super.toString() +
                 ", birthDate=" + birthDate + "}\n";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Individual)) return false;
+        if (!super.equals(o)) return false;
+        Individual that = (Individual) o;
+        return birthDate.equals(that.birthDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), birthDate);
     }
 }

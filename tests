@@ -1,0 +1,3 @@
+load_clients data.json
+load_products data.json
+generate_brokers

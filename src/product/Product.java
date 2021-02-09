@@ -1,5 +1,7 @@
 package product;
 
+import java.util.Objects;
+
 public abstract class Product {
     private int id;
     private String name;
@@ -54,6 +56,19 @@ public abstract class Product {
 
     public void setMinPrice(double minPrice) {
         this.minPrice = minPrice;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Product)) return false;
+        Product product = (Product) o;
+        return Double.compare(product.sellPrice, sellPrice) == 0 && Double.compare(product.minPrice, minPrice) == 0 && year == product.year && name.equals(product.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, sellPrice, minPrice, year);
     }
 
     @Override

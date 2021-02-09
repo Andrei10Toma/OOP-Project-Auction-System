@@ -1,0 +1,42 @@
+load_clients data.json
+load_products data.json
+generate_brokers
+list_products
+add_product IkeaBed 2000 FURNITURE 2019 Textil&Wood Sleeping
+bid 1 21 4000
+list_products
+add_product IkeaBed 2000 FURNITURE 2019 Textil&Wood Sleeping
+list_products
+add_product IkeaBed 2000 FURNITURE 2019 Textil&Wood Sleeping
+list_products
+add_product IkeaBed 2000 FURNITURE 2019 Textil&Wood Sleeping
+list_products
+add_product IkeaBed 2000 FURNITURE 2019 Textil&Wood Sleeping
+list_products
+add_product IkeaBed 2000 FURNITURE 2019 Textil&Wood Sleeping
+list_products
+add_product IkeaBed 2000 FURNITURE 2019 Textil&Wood Sleeping
+list_products
+add_product IkeaBed 2000 FURNITURE 2019 Textil&Wood Sleeping
+list_products
+add_product IkeaBed 2000 FURNITURE 2019 Textil&Wood Sleeping
+list_products
+add_product IkeaBed 2000 FURNITURE 2019 Textil&Wood Sleeping
+list_products
+add_product IkeaBed 2000 FURNITURE 2019 Textil&Wood Sleeping
+list_products
+add_product IkeaBed 2000 FURNITURE 2019 Textil&Wood Sleeping
+list_products
+add_product IkeaBed 2000 FURNITURE 2019 Textil&Wood Sleeping
+list_products
+add_product IkeaBed 2000 FURNITURE 2019 Textil&Wood Sleeping
+list_products
+add_product IkeaBed 2000 FURNITURE 2019 Textil&Wood Sleeping
+list_products
+add_product IkeaBed 2000 FURNITURE 2019 Textil&Wood Sleeping
+add_product IkeaBed 2000 FURNITURE 2019 Textil&Wood Sleeping
+add_product IkeaBed 2000 FURNITURE 2019 Textil&Wood Sleeping
+list_products
+add_product IkeaBed 2000 FURNITURE 2019 Textil&Wood Sleeping
+list_products
+exit

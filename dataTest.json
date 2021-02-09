@@ -1,0 +1,71 @@
+{
+  "Clients": [
+    {
+      "type": "INDIVIDUAL",
+      "name": "Andrei Toma",
+      "address": "andrei.toma1009@stud.acs.upb.ro",
+      "birthdate": "2000.01.01"
+    },
+    {
+      "type": "INDIVIDUAL",
+      "name": "Stan Lucian Mihai",
+      "address": "stanlucimihai@gmail.com",
+      "birthdate": "2000.01.01"
+    },
+    {
+      "type": "LEGAL",
+      "name": "Dragomir Constantin",
+      "address": "cos33@yahoo.com",
+      "company": "SRL",
+      "socialCapital": 1000
+    },
+    {
+      "type": "INDIVIDUAL",
+      "name": "Ilie Alexandru",
+      "address": "alex_fcp@gmail.com",
+      "birthdate": "2000.01.01"
+    }
+  ],
+  "Products": [
+    {
+      "productType": "PAINTING",
+      "name": "Starry Night",
+      "minPrice": 3000,
+      "year": 1882,
+      "painterName": "Van Gogh",
+      "colors": "OIL"
+    },
+    {
+      "productType": "JEWEL",
+      "name": "Boys Police Necklace",
+      "minPrice": 200,
+      "year": 2020,
+      "material": "Stainless Steel",
+      "gem": "false"
+    },
+    {
+      "productType": "FURNITURE",
+      "name": "Active Tennis Table",
+      "minPrice": 650,
+      "year": 2017,
+      "type": "Entertainment",
+      "material": "Steel and Wood"
+    },
+    {
+      "productType": "PAINTING",
+      "name": "Mona Lisa",
+      "minPrice": 2000,
+      "year": 1870,
+      "painterName": "Leonardo DaVinci",
+      "colors": "TEMPERA"
+    },
+    {
+      "productType": "JEWEL",
+      "name": "Ring Pandora",
+      "minPrice": 300,
+      "year": 2017,
+      "material": "Silver",
+      "gem": "true"
+    }
+  ]
+}

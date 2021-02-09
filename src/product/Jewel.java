@@ -1,8 +1,24 @@
 package product;
 
+import java.util.Objects;
+
 public class Jewel extends Product {
     private String material;
     private boolean gem;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Jewel)) return false;
+        if (!super.equals(o)) return false;
+        Jewel jewel = (Jewel) o;
+        return gem == jewel.gem && material.equals(jewel.material);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), material, gem);
+    }
 
     public Jewel(String name, double minPrice, int year, String material, boolean gem) {
         super(name, minPrice, year);

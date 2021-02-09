@@ -17,7 +17,8 @@ import static auction.Auction.ENDED;
 
 public class AuctionHouse {
     public static final String CLIENT = "Client ";
-    private Map<Integer, Product> products = new TreeMap<>();
+    private final Map<Integer, Product> products = new TreeMap<>();
+    private Map<Integer, Product> soldProducts = new TreeMap<>();
     private Map<Integer, Client> clients = new TreeMap<>();
     private Map<Integer, Auction> auctions = new TreeMap<>();
     private List<Broker> brokers = new ArrayList<>();
@@ -30,10 +31,6 @@ public class AuctionHouse {
             instance = new AuctionHouse();
         }
         return instance;
-    }
-
-    public void setProducts(Map<Integer, Product> products) {
-        this.products = products;
     }
 
     public void setClients(Map<Integer, Client> clients) {
@@ -64,6 +61,10 @@ public class AuctionHouse {
         return brokers;
     }
 
+    public Map<Integer, Product> getSoldProducts() {
+        return soldProducts;
+    }
+
     public void registerClients(String filename) {
         adapter.setFilename(filename);
         adapter.readClient(clients);
@@ -79,7 +80,9 @@ public class AuctionHouse {
     }
 
     public void listProducts() {
-        System.out.println(products);
+        synchronized (products) {
+            System.out.println(products);
+        }
     }
 
     public void generateBrokers() {
@@ -94,6 +97,9 @@ public class AuctionHouse {
     }
 
     private void addAuctionForProduct(int clientId, int productId, double maxPricePaidByClient) throws BrokerNotFound, MaxPriceLessThanMinimumPrice {
+        if (maxPricePaidByClient < products.get(productId).getMinPrice()) {
+            throw new MaxPriceLessThanMinimumPrice("Client with id " + clientId + " paid too less for the product " + productId + ".");
+        }
         auctions.put(productId, new Auction(new Random().nextInt(clients.size() - 1) + 2, productId));
         int randomBroker = new Random().nextInt(brokers.size());
         if (brokers.stream().anyMatch(broker -> randomBroker + 1 == broker.getId())) {
@@ -104,13 +110,17 @@ public class AuctionHouse {
     }
 
     private void addClientToAuction(int clientId, int productId, double maxPricePaidByClient)
-            throws ClientAlreadyEnroledForAuction, BrokerNotFound, MaxPriceLessThanMinimumPrice {
+            throws ClientAlreadyEnrolledForAuction, BrokerNotFound, MaxPriceLessThanMinimumPrice {
         if (brokers.stream()
                 .filter(broker -> broker.getClients().get(productId) != null)
                 .anyMatch(broker -> broker.getClients().get(productId).stream()
                         .anyMatch(pair -> pair.getKey().getId() == clientId))) {
-            throw new ClientAlreadyEnroledForAuction("Client with id " + clientId + " already enrolled at auction. "
-                    + productId);
+            throw new ClientAlreadyEnrolledForAuction("Client with id " + clientId + " already enrolled at auction "
+                    + productId + ".");
+        }
+        if (maxPricePaidByClient < products.get(productId).getMinPrice()) {
+            throw new MaxPriceLessThanMinimumPrice("Client with id " + clientId + " paid too less for the product " +
+                    productId + ".");
         }
         int randomBroker = new Random().nextInt(brokers.size());
         if (brokers.stream().anyMatch(broker -> randomBroker + 1 == broker.getId())) {
@@ -127,31 +137,33 @@ public class AuctionHouse {
 
     private void addClientToAuctionAssignBroker(int clientId, int productId, double maxPricePaidByClient, int randomBroker) throws MaxPriceLessThanMinimumPrice {
         if (maxPricePaidByClient < products.get(productId).getMinPrice()) {
-            throw new MaxPriceLessThanMinimumPrice("Client with " + clientId + " paid too less for the product " + productId + ".");
+            throw new MaxPriceLessThanMinimumPrice("Client with id " + clientId + " paid too less for the product " + productId + ".");
         }
         brokers.get(randomBroker).getClients().put(productId, new ArrayList<>());
         brokers.get(randomBroker).getClients().get(productId).add(new ImmutablePair<>(clients.get(clientId), maxPricePaidByClient));
     }
 
     public void checkAuction(int clientId, int productId, double maxPricePaidByClient)
-            throws ProductNotFound, ClientNotFound, BrokerNotFound, ClientAlreadyEnroledForAuction, MaxPriceLessThanMinimumPrice, NotEnoughBrokers {
-        if (brokers.size() < 2) {
-            throw new NotEnoughBrokers("Not enough brokers were generated.");
-        }
-        if (!products.containsKey(productId)) {
-            throw new ProductNotFound("Product with id " + productId + " was not found.");
-        }
-        if (!clients.containsKey(clientId)) {
-            throw new ClientNotFound("Client with id " + clientId + "was not found");
-        }
-        if (!auctions.containsKey(productId)) {
-            addAuctionForProduct(clientId, productId, maxPricePaidByClient);
-        } else {
-            addClientToAuction(clientId, productId, maxPricePaidByClient);
-        }
-        System.out.println(CLIENT + clientId + " assigned successfully at auction for product " + productId + ".");
-        if (auctions.get(productId).canStart()) {
-            auctions.get(productId).startAuction(brokers, products.get(productId).getMinPrice());
+            throws ProductNotFound, ClientNotFound, BrokerNotFound, ClientAlreadyEnrolledForAuction, MaxPriceLessThanMinimumPrice, NotEnoughBrokers {
+        synchronized (products) {
+            if (brokers.size() < 2) {
+                throw new NotEnoughBrokers("Not enough brokers were generated.");
+            }
+            if (!clients.containsKey(clientId)) {
+                throw new ClientNotFound("Client with id " + clientId + " was not found.");
+            }
+            if (!products.containsKey(productId)) {
+                throw new ProductNotFound("Product with id " + productId + " was not found.");
+            }
+            if (!auctions.containsKey(productId)) {
+                addAuctionForProduct(clientId, productId, maxPricePaidByClient);
+            } else {
+                addClientToAuction(clientId, productId, maxPricePaidByClient);
+            }
+            System.out.println(CLIENT + clientId + " assigned successfully at auction for product " + productId + ".");
+            if (auctions.get(productId).canStart()) {
+                auctions.get(productId).startAuction(brokers, products.get(productId).getMinPrice());
+            }
         }
     }
 
@@ -190,15 +202,21 @@ public class AuctionHouse {
         }
         double finalWinnerBid = winnerBid;
         brokersWithClientsInAuction
-                .forEach(broker -> broker.updateDataAndEndCommunication(auctions.get(auctionId).getWinnerClient(), auctionId, finalWinnerBid, products));
+                .forEach(broker -> broker.updateDataAndEndCommunication(auctions.get(auctionId).getWinnerClient(), auctionId, finalWinnerBid, products, soldProducts));
         auctions.remove(auctionId);
         System.out.println(AUCTION_STRING + auctionId + ENDED);
     }
 
     public boolean checkForEarlyWinner(Map<Integer, Double> bidMap, int auctionId, double minPrice) {
+        List<Broker> brokersWithClientsInAuction = brokers.stream()
+                .filter(broker -> broker.getClients().get(auctionId) != null)
+                .collect(Collectors.toList());
         int clientId = new ArrayList<>(bidMap.keySet()).get(0);
         if (bidMap.size() == 1 && bidMap.get(clientId) >= minPrice) {
             System.out.println(CLIENT + clientId + " wins the auction for product " + auctionId + ".");
+            brokersWithClientsInAuction
+                    .forEach(broker -> broker.updateDataAndEndCommunication(clients.get(clientId), auctionId, bidMap.get(clientId), products, soldProducts));
+            auctions.remove(auctionId);
             System.out.println(AUCTION_STRING + auctionId + ENDED);
             return true;
         }
@@ -211,5 +229,9 @@ public class AuctionHouse {
 
     public void listAuctions() {
         System.out.println(auctions);
+    }
+
+    public static void reset() {
+        instance = null;
     }
 }

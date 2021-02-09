@@ -1,5 +1,7 @@
 package product;
 
+import java.util.Objects;
+
 public class Painting extends Product{
     private String painterName;
     private Colors colors;
@@ -24,6 +26,20 @@ public class Painting extends Product{
 
     public void setColors(Colors colors) {
         this.colors = colors;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Painting)) return false;
+        if (!super.equals(o)) return false;
+        Painting painting = (Painting) o;
+        return painterName.equals(painting.painterName) && colors == painting.colors;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), painterName, colors);
     }
 
     @Override
