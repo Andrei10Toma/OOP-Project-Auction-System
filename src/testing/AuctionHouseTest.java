@@ -164,6 +164,7 @@ public class AuctionHouseTest {
         auctionHouse.checkAuction(2, 2, 800);
         auctionHouse.checkAuction(4, 2, 700);
         assertFalse(auctionHouse.getAuctions().containsKey(2));
+        assertFalse(auctionHouse.getProducts().containsKey(2));
         assertTrue(auctionHouse.getClients().get(1).getNumberAuctionWins() == 1
                 || auctionHouse.getClients().get(2).getNumberAuctionWins() == 1
                 || auctionHouse.getClients().get(4).getNumberAuctionWins() == 1);
