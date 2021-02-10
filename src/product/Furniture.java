@@ -2,10 +2,21 @@ package product;
 
 import java.util.Objects;
 
+/**
+ * Representation of a Furniture product object.
+ */
 public class Furniture extends Product {
     private String type;
     private String material;
 
+    /**
+     * constructor for Furniture product.
+     * @param name name of the product.
+     * @param minPrice minimum price of the product.
+     * @param year fabrication year of the product.
+     * @param type type of the furniture.
+     * @param material material of the furniture.
+     */
     public Furniture(String name, double minPrice, int year, String type, String material) {
         super(name, minPrice, year);
         this.type = type;

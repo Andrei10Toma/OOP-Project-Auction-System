@@ -6,6 +6,9 @@ import licitation_strategies.StrategyFactory;
 import java.util.Objects;
 import java.util.Random;
 
+/**
+ * Representation of a client object.
+ */
 public abstract class Client {
     private int id;
     private String name;
@@ -14,7 +17,13 @@ public abstract class Client {
     private int numberAuctionWins;
     protected static int counterClients = 1;
 
+    /**
+     * Constructor for the client object.
+     * @param name name of the client.
+     * @param address address of the client.
+     */
     protected Client(String name, String address) {
+        // autoincrement id
         this.id = counterClients++;
         this.name = name;
         this.address = address;
@@ -62,10 +71,20 @@ public abstract class Client {
         this.numberAuctionWins = numberAuctionWins;
     }
 
+    /**
+     * choose the initial bid (a sum between 1 and 100).
+     * @return the initial sum.
+     */
     public double chooseInitialBid() {
         return new Random().nextDouble() * 100;
     }
 
+    /**
+     * calculate the bid for the current step.
+     * @param lastBid max bid from last step.
+     * @param maxSum max sum of the client.
+     * @return the bid at the current step.
+     */
     public double calculateBid(double lastBid, double maxSum) {
         StrategyFactory strategyFactory = new StrategyFactory();
         Strategy strategy = strategyFactory.getStrategy(new Random().nextInt(3));

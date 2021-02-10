@@ -2,6 +2,9 @@ package product;
 
 import java.util.Objects;
 
+/**
+ * Representation of a Product object.
+ */
 public abstract class Product {
     private int id;
     private String name;
@@ -10,6 +13,12 @@ public abstract class Product {
     private int year;
     protected static int counterProducts = 1;
 
+    /**
+     * Constructor for a Product object.
+     * @param name name of the product.
+     * @param minPrice minimum price of the product.
+     * @param year fabrication year of the product.
+     */
     protected Product(String name, double minPrice, int year) {
         this.id = counterProducts++;
         this.name = name;

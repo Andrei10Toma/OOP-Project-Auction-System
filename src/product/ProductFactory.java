@@ -1,6 +1,19 @@
 package product;
 
+/**
+ * Product factory.
+ */
 public class ProductFactory {
+    /**
+     * create the product based on the given type.
+     * @param productType the product type.
+     * @param name the name of the product.
+     * @param minPrice the minimum price of the product.
+     * @param year fabrication year of the product.
+     * @param characteristicElem1 first characteristic element of the product.
+     * @param characteristicElem2 second characteristic element of the product.
+     * @return the created product from the given parameters based on the product type.
+     */
     public Product getProduct(ProductType productType, String name, double minPrice, int year,
                               String characteristicElem1, String characteristicElem2) {
         if (productType == ProductType.FURNITURE) {

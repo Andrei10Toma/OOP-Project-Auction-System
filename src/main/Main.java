@@ -9,8 +9,17 @@ import product.ProductType;
 
 import java.util.Scanner;
 
+/**
+ * the class where the main function is located.
+ */
 public class Main {
+    /**
+     * main function.
+     * @param args not used.
+     * @throws InterruptedException from Thread.sleep()
+     */
     public static void main(String[] args) throws InterruptedException {
+        // scanner for the input commands
         Scanner scanner = new Scanner(System.in);
         AuctionHouse auctionHouse = AuctionHouse.getInstance();
         while (true) {
@@ -18,9 +27,11 @@ public class Main {
             String[] commandComponents = command.split(" ");
             try {
                 Tasks task = Tasks.valueOf(commandComponents[0].toUpperCase());
+                // exit command
                 if (task == Tasks.EXIT) {
                     break;
                 }
+                // interpret the commands
                 interpretCommand(auctionHouse, commandComponents, task);
             } catch (IllegalArgumentException | ClientNotFound | ProductNotFound | BrokerNotFound |
                     ClientAlreadyEnrolledForAuction | MaxPriceLessThanMinimumPrice | NotEnoughBrokers e) {
@@ -29,6 +40,12 @@ public class Main {
         }
     }
 
+    /**
+     * command interpreter.
+     * @param auctionHouse auction house.
+     * @param commandComponents the command components.
+     * @param task the command.
+     */
     private static void interpretCommand(AuctionHouse auctionHouse, String[] commandComponents, Tasks task)
             throws ProductNotFound, ClientNotFound, BrokerNotFound, ClientAlreadyEnrolledForAuction, MaxPriceLessThanMinimumPrice, NotEnoughBrokers, InterruptedException {
         switch (task) {

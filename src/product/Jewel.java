@@ -2,6 +2,9 @@ package product;
 
 import java.util.Objects;
 
+/**
+ * Representation of a Jewel product.
+ */
 public class Jewel extends Product {
     private String material;
     private boolean gem;
@@ -20,6 +23,14 @@ public class Jewel extends Product {
         return Objects.hash(super.hashCode(), material, gem);
     }
 
+    /**
+     * constructor for the Jewel product.
+     * @param name name of the product.
+     * @param minPrice minimum price of the product.
+     * @param year fabrication year of the product.
+     * @param material material of the Jewel.
+     * @param gem jewel contains gem.
+     */
     public Jewel(String name, double minPrice, int year, String material, boolean gem) {
         super(name, minPrice, year);
         this.material = material;

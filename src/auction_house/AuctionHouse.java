@@ -15,6 +15,9 @@ import java.util.stream.Collectors;
 import static auction.Auction.AUCTION_STRING;
 import static auction.Auction.ENDED;
 
+/**
+ * Class representing an auction house object.
+ */
 public class AuctionHouse {
     public static final String CLIENT = "Client ";
     public static final String CLIENT_WITH_ID = "Client with id ";
@@ -27,6 +30,10 @@ public class AuctionHouse {
     private static AuctionHouse instance;
     private final IAdapter adapter = new JSONAdapter();
 
+    /**
+     * Auction house is singleton.
+     * @return instance of the auction house.
+     */
     public static AuctionHouse getInstance() {
         if (instance == null) {
             instance = new AuctionHouse();
@@ -62,24 +69,41 @@ public class AuctionHouse {
         return brokers;
     }
 
+    /**
+     * register the clients with the adapter.
+     * @param filename file where the data is stored.
+     */
     public void registerClients(String filename) {
         adapter.setFilename(filename);
         adapter.readClient(clients);
     }
 
+    /**
+     * register the product with the adapter
+     * @param filename JSON file where the data il stored.
+     */
     public void registerProducts(String filename) {
         adapter.setFilename(filename);
         administrator.readProducts(adapter, products);
     }
 
+    /**
+     * list the clients registered in the auction house.
+     */
     public void listClients() {
         System.out.println(clients);
     }
 
+    /**
+     * list the products registered in the auction house.
+     */
     public void listProducts() {
         System.out.println(products);
     }
 
+    /**
+     * generate a random number of brokers between 2 and 9
+     */
     public void generateBrokers() {
         int minimumNumberBrokers = 2;
         int maximumNumberBrokers = 10;
@@ -91,10 +115,14 @@ public class AuctionHouse {
         System.out.println("Generated " + brokers.size() + " brokers.");
     }
 
-    private void addAuctionForProduct(int clientId, int productId, double maxPricePaidByClient) throws BrokerNotFound, MaxPriceLessThanMinimumPrice {
-        if (maxPricePaidByClient < products.get(productId).getMinPrice()) {
-            throw new MaxPriceLessThanMinimumPrice(CLIENT_WITH_ID + clientId + PAID_TOO_LESS_FOR_THE_PRODUCT + productId + ".");
-        }
+    /**
+     * creates the auction for the product and the client is assigned to a random broker.
+     * @param clientId client that wants to auction for the product.
+     * @param productId product that the clients will auction for.
+     * @param maxPricePaidByClient max price paid by the client.
+     * @throws BrokerNotFound broker not found in the map of brokers.
+     */
+    private void addAuctionForProduct(int clientId, int productId, double maxPricePaidByClient) throws BrokerNotFound {
         auctions.put(productId, new Auction(new Random().nextInt(clients.size() - 1) + 2, productId));
         int randomBroker = new Random().nextInt(brokers.size());
         if (brokers.stream().anyMatch(broker -> randomBroker + 1 == broker.getId())) {
@@ -104,18 +132,22 @@ public class AuctionHouse {
         }
     }
 
+    /**
+     * auction for product already exists and the client is added to the auction and the client is assigned to a random broker.
+     * @param clientId client that is added to the auction.
+     * @param productId product that the client wants to auction for.
+     * @param maxPricePaidByClient the max price paid by the client.
+     * @throws ClientAlreadyEnrolledForAuction client is already enrolled for the auction.
+     * @throws BrokerNotFound the broker that the client will be assigned is not found in the brokers map.
+     */
     private void addClientToAuction(int clientId, int productId, double maxPricePaidByClient)
-            throws ClientAlreadyEnrolledForAuction, BrokerNotFound, MaxPriceLessThanMinimumPrice {
+            throws ClientAlreadyEnrolledForAuction, BrokerNotFound {
         if (brokers.stream()
                 .filter(broker -> broker.getClients().get(productId) != null)
                 .anyMatch(broker -> broker.getClients().get(productId).stream()
                         .anyMatch(pair -> pair.getKey().getId() == clientId))) {
             throw new ClientAlreadyEnrolledForAuction(CLIENT_WITH_ID + clientId + " already enrolled at auction "
                     + productId + ".");
-        }
-        if (maxPricePaidByClient < products.get(productId).getMinPrice()) {
-            throw new MaxPriceLessThanMinimumPrice(CLIENT_WITH_ID + clientId + PAID_TOO_LESS_FOR_THE_PRODUCT +
-                    productId + ".");
         }
         int randomBroker = new Random().nextInt(brokers.size());
         if (brokers.stream().anyMatch(broker -> randomBroker + 1 == broker.getId())) {
@@ -130,14 +162,31 @@ public class AuctionHouse {
         }
     }
 
-    private void addClientToAuctionAssignBroker(int clientId, int productId, double maxPricePaidByClient, int randomBroker) throws MaxPriceLessThanMinimumPrice {
-        if (maxPricePaidByClient < products.get(productId).getMinPrice()) {
-            throw new MaxPriceLessThanMinimumPrice(CLIENT_WITH_ID + clientId + PAID_TOO_LESS_FOR_THE_PRODUCT + productId + ".");
-        }
+    /**
+     * add client to auction and the client is assigned to a random broker.
+     * @param clientId client that will be assigned to a broker.
+     * @param productId product that the clients will auction for.
+     * @param maxPricePaidByClient the max price paid by the client for the product.
+     * @param randomBroker the broker to which the client will be assigned.
+     */
+    private void addClientToAuctionAssignBroker(int clientId, int productId, double maxPricePaidByClient, int randomBroker) {
         brokers.get(randomBroker).getClients().put(productId, new ArrayList<>());
         brokers.get(randomBroker).getClients().get(productId).add(new ImmutablePair<>(clients.get(clientId), maxPricePaidByClient));
     }
 
+    /**
+     * checks if the auction can start and adds the client to the auction.
+     * @param clientId id of the clients that wants to participate at the auction.
+     * @param productId id of the product that the clients wants to auction for.
+     * @param maxPricePaidByClient the max price paid by client for the product.
+     * @throws ProductNotFound the clients wants to auction for a nonexistent product.
+     * @throws ClientNotFound the client is not existent in the clients map.
+     * @throws BrokerNotFound the broker is not found in the brokers map.
+     * @throws ClientAlreadyEnrolledForAuction the client is already participating at the auction for this product.
+     * @throws MaxPriceLessThanMinimumPrice the max price paid by the client is less than the minimum price of the product.
+     * @throws NotEnoughBrokers there are not enough brokers generated.
+     * @throws InterruptedException from Thread.sleep().
+     */
     public void checkAuction(int clientId, int productId, double maxPricePaidByClient)
             throws ProductNotFound, ClientNotFound, BrokerNotFound, ClientAlreadyEnrolledForAuction,
             MaxPriceLessThanMinimumPrice, NotEnoughBrokers, InterruptedException {
@@ -150,6 +199,10 @@ public class AuctionHouse {
         if (!products.containsKey(productId)) {
             throw new ProductNotFound("Product with id " + productId + " was not found.");
         }
+        if (maxPricePaidByClient < products.get(productId).getMinPrice()) {
+            throw new MaxPriceLessThanMinimumPrice(CLIENT_WITH_ID + clientId + PAID_TOO_LESS_FOR_THE_PRODUCT +
+                    productId + ".");
+        }
         if (!auctions.containsKey(productId)) {
             addAuctionForProduct(clientId, productId, maxPricePaidByClient);
         } else {
@@ -161,17 +214,30 @@ public class AuctionHouse {
         }
     }
 
+    /**
+     * calculate maximum bid at each step.
+     * @param bidMap the bids of the clients.
+     * @param auctionId id of the auction.
+     */
     public void calculateMaxBid(Map<Integer, Double> bidMap, int auctionId) {
         double maxBid = Collections.max(bidMap.values());
         brokers.stream().filter(broker -> broker.getClients().get(auctionId) != null)
                 .forEach(broker -> broker.informClientsAboutMaxSum(auctionId, maxBid, bidMap));
     }
 
+    /**
+     * declares the winner of the auction. Winner client is the one with the maximum bid and the max number of auction wins.
+     * @param bidMap bids of the current clients in the auction.
+     * @param auctionId the id of the auction.
+     * @param minPriceOfTheProduct the minimum price of the product.
+     * @throws InterruptedException from Thread.sleep().
+     */
     public void declareTheWinnerOfTheAuction(Map<Integer, Double> bidMap, int auctionId, double minPriceOfTheProduct) throws InterruptedException {
         double winnerBid = Double.MIN_VALUE;
         List<Broker> brokersWithClientsInAuction = brokers.stream()
                 .filter(broker -> broker.getClients().get(auctionId) != null)
                 .collect(Collectors.toList());
+        // find out who won the auction
         for (Broker broker : brokersWithClientsInAuction) {
             for (Pair<Client, Double> pair : broker.getClients().get(auctionId)) {
                 if (bidMap.containsKey(pair.getKey().getId())) {
@@ -186,6 +252,7 @@ public class AuctionHouse {
             }
         }
         System.out.println();
+        // notify the clients
         if (winnerBid >= minPriceOfTheProduct) {
             System.out.println(CLIENT + auctions.get(auctionId).getWinnerClient().getId() +
                     " wins the auction for product " + auctionId + ".");
@@ -195,13 +262,23 @@ public class AuctionHouse {
                     " and the maximum bid is " + winnerBid + ".");
         }
         double finalWinnerBid = winnerBid;
+        // end the communication between brokers and clients
         brokersWithClientsInAuction
                 .forEach(broker -> broker.updateDataAndEndCommunication(auctions.get(auctionId).getWinnerClient(), auctionId, finalWinnerBid, products));
+        // remove the auction from the list of active auctions
         auctions.remove(auctionId);
         Thread.sleep(100);
         System.out.println(AUCTION_STRING + auctionId + ENDED);
     }
 
+    /**
+     * check if remained only one client in the auction.
+     * @param bidMap bids of the current clients in the auction.
+     * @param auctionId id of the auction.
+     * @param minPrice minimum price of the product.
+     * @return true if the client won the bid earlier than max steps.
+     * @throws InterruptedException from Thread.sleep().
+     */
     public boolean checkForEarlyWinner(Map<Integer, Double> bidMap, int auctionId, double minPrice) throws InterruptedException {
         List<Broker> brokersWithClientsInAuction = brokers.stream()
                 .filter(broker -> broker.getClients().get(auctionId) != null)
@@ -219,10 +296,16 @@ public class AuctionHouse {
         return false;
     }
 
+    /**
+     * list the brokers.
+     */
     public void listBrokers() {
         System.out.println(brokers);
     }
 
+    /**
+     * list the active auctions.
+     */
     public void listAuctions() {
         System.out.println(auctions);
     }

@@ -1,6 +1,14 @@
 package licitation_strategies;
 
+/**
+ * Strategy factory.
+ */
 public class StrategyFactory {
+    /**
+     * returns the strategy based on the number given as parameter.
+     * @param numberOfStrategy a number between 0 and 3.
+     * @return the strategy.
+     */
     public Strategy getStrategy(int numberOfStrategy) {
         if (numberOfStrategy == 0) {
             return new TheClassicOne();

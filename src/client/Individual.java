@@ -2,9 +2,18 @@ package client;
 
 import java.util.Objects;
 
+/**
+ * Representation of an individual object.
+ */
 public class Individual extends Client {
     private String birthDate;
 
+    /**
+     * Constructor for the individual client object.
+     * @param name name of the client.
+     * @param address address of the client.
+     * @param birthDate birth date of the client.
+     */
     public Individual(String name, String address, String birthDate) {
         super(name, address);
         this.birthDate = birthDate;

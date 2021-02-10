@@ -2,10 +2,20 @@ package client;
 
 import java.util.Objects;
 
+/**
+ * representation of a Legal Client object.
+ */
 public class LegalPerson extends Client {
     private double socialCapital;
     private Company companyType;
 
+    /**
+     * Constructor for the legal client object.
+     * @param name name of the client.
+     * @param address address of the client.
+     * @param socialCapital social capital of the legal client.
+     * @param companyType company type of the legal person client.
+     */
     public LegalPerson(String name, String address, double socialCapital, Company companyType) {
         super(name, address);
         this.socialCapital = socialCapital;

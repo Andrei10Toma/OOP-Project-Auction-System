@@ -4,7 +4,15 @@ import client.Client;
 import client.Individual;
 import client.LegalPerson;
 
+/**
+ * Factory for the commission that the broker will when the auction ends.
+ */
 public class CommissionFactory {
+    /**
+     * Calculates the commission depending on the winner client.
+     * @param client the winner client.
+     * @return commission type.
+     */
     public CommissionType chooseCommission(Client client) {
         if (client instanceof Individual && client.getNumberParticipation() <= 5) {
             return new CommissionFirstCase();
@@ -13,7 +21,7 @@ public class CommissionFactory {
         } else if (client instanceof LegalPerson && client.getNumberParticipation() < 25) {
             return new CommissionThirdCase();
         } else if (client instanceof LegalPerson && client.getNumberParticipation() > 25) {
-            return new CommissionForthCase();
+            return new CommissionFourthCase();
         } else {
             return null;
         }
