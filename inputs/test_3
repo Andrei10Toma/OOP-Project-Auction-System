@@ -1,0 +1,33 @@
+load_clients data.json
+load_products data.json
+generate_brokers
+bid 1 1 2000
+bid 1 2 2999
+bid 1 19 1200
+bid 1 1 2300
+bid 1 17 2000
+list_auctions
+bid 2 1 2000
+bid 2 2 2999
+bid 2 19 1200
+bid 2 1 2300
+bid 2 17 2000
+bid 4 1 2000
+bid 4 2 2999
+bid 4 19 1200
+bid 4 1 2300
+bid 4 17 2000
+bid 5 1 2000
+bid 5 2 2999
+bid 5 19 1200
+bid 5 1 2300
+bid 5 17 2000
+bid 6 1 2000
+bid 6 2 2999
+bid 6 19 1200
+bid 6 1 2300
+bid 6 17 2000
+list_products
+list_brokers
+list_clients
+exit
